@@ -89,7 +89,7 @@ function attachEvents() {
 
     $("#exchange").click(async () => {
         let number = $("#input_usdt").val()
-        if (number > $("#usdt_balance").val()) {
+        if (number > $("#usdt_balance").html()) {
             alert("not enough USDT!")
             return
         }
