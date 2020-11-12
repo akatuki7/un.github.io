@@ -1,4 +1,4 @@
-@media(min-width: 661px){
+@media screen and (min-device-width: 661px){
 body {
   background: url('./static/bkg.png');
   background-repeat: repeat-x;
