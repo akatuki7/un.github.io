@@ -1,0 +1,313 @@
+@media(min-width: 661px){
+body {
+  background: url('./static/bkg.png');
+  background-repeat: repeat-x;
+  width: auto;
+}
+#top_basic {
+  width: 100%;
+  height: 268px;
+  padding-top: 22px;
+}
+#center_card {
+  width: 80%;
+  height: 363px;
+  margin: 0 0 0 10%;
+  background-color: #FFFFFF;
+  box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.11);
+  border-radius: 8px;
+  position: relative;
+}
+#network {
+  width: 160px;
+  height: 32px;
+  margin: 0 0 0 23%;
+  display: inline-flex;
+  border-radius: 15px;
+  border: 2px solid #CACCCD;
+}
+.basic_title {
+  font-size: 26px;
+  font-family: Lato-Bold, Lato;
+  font-weight: bold;
+  color: #1E2024;
+  line-height: 32px;
+}
+.basic_con {
+  display: flex;
+  font-size: 18px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #AAACAD;
+  line-height: 25px;
+}
+#basic_rate {
+  font-size: 26px;
+  font-family: Lato-Semibold, Lato;
+  font-weight: 600;
+  color: #1E2024;
+  /* line-height: 32px; */
+  line-height: 91px;
+  text-align: center;
+}
+#line {
+  width: 96%;
+  height: 1px;
+  margin: 0 0 2% 80px;
+  background: #E1E5E7;
+}
+#dot {
+  width: 6px;
+  height: 6px;
+  margin: 8% 10px 0 8%;
+  background: #44D7B6;
+  border-radius: 3px;
+}
+#network_type {
+  font-size: 18px;
+  font-family: Lato-Regular, Lato;
+  font-weight: 400;
+  color: #1E2024;
+  line-height: 32px;
+}
+#input_usdt {
+  width: 70%;
+  height: 42px;
+  background: #F6F7F8;
+  border-radius: 15px;
+  border: 1px solid #E7EAEC;
+}
+#all {
+  width: 58px;
+  height: 28px;
+  font-size: 18px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  line-height: 25px;
+  margin: 4px 0 0 30%;
+  color: #F28552;
+  background: rgba(242, 133, 82, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(242, 133, 82, 0.5);
+}
+#basic_hop {
+  width: 60%;
+  padding-left: 10%;
+  font-size: 16px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #1E2024;
+  line-height: 54px;
+}
+#exchange {
+  width: 10%;
+  height: 42px;
+  background: #F28552;
+  border-radius: 15px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  font-family: Lato-Bold, Lato;
+  font-weight: bold;
+  color: #FFFFFF;
+  line-height: 34px;
+  border-width: 0px !important;
+}
+#remaining {
+  width: 100%;
+  height: 40px;
+  bottom: 0;
+  /* padding-left: 5%; */
+  position: absolute;
+  background: #F7F9F9;
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #1E2024;
+  line-height: 40px;
+}
+#balances {
+  display: flex;
+  margin-top: 22px;
+  margin-left: 23%;
+}
+#account {
+  margin-left: 23%;
+  margin-top: 42px;
+}
+#change, #change_hop {
+  display: flex;
+}
+#change_hop {
+  width: 40%;
+}
+#change_usdt {
+  width: 40%;
+}
+#change_usdt_input {
+  margin: 8px 0 8px 30%;
+}
+
+}
+
+@media screen and (max-device-width: 660px) {
+  body {
+  background: #F0F2F3;
+
+  width: auto;
+  }
+  #top_basic {
+      width: 100%;
+      height: 178px;
+      padding-top: 22px;
+      position: relative;
+      background: url('./static/iPhone/bg-png.png');
+      background-repeat: repeat-x;
+  }
+  #center_card {
+      width: 92%;
+      height: 262px;
+      margin: 0 0 0 4%;
+      background-color: #FFFFFF;
+      box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.11);
+      border-radius: 12px;
+      position: relative;
+  }
+  #network {
+      width: 102px;
+      height: 26px;
+      margin: 0 0 0 23%;
+      display: inline-flex;
+      position: absolute;
+      right: 16px;
+      border-radius: 15px;
+      border: 2px solid #CACCCD;
+      background: #FFFFFF;
+  }
+  .basic_title {
+      height: 24px;
+      font-size: 1rem;
+      font-family: Lato-Bold, Lato;
+      font-weight: bold;
+      color: #1E2024;
+      line-height: 24px;
+  }
+  .basic_con {
+      width: 120px;
+      height: 20px;
+      font-size: 0.8rem;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #AAACAD;
+      line-height: 20px;
+      display: flex;
+  }
+  #basic_rate {
+      height: 22px;
+      font-size: 18px;
+      font-family: Lato-Regular, Lato;
+      font-weight: 400;
+      color: #1E2024;
+      line-height: 54px;
+      margin-left: 4%;
+  }
+  #line {
+      width: 96%;
+      /* width: 319px; */
+      height: 1px;
+      /* margin: 100px 0 0 2%; */
+      margin-left: 2%;
+      position: absolute;
+      top: 100px;
+      background: #F6F7F8;
+      border-radius: 15px;
+  /* border: 1px solid #E7EAEC; */
+  }
+  #dot {
+      width: 6px;
+      height: 6px;
+      margin: 10% 10px 0 8%;
+      background: #44D7B6;
+      border-radius: 3px;
+  }
+  #network_type {
+      font-size: 14px;
+      font-family: Lato-Regular, Lato;
+      font-weight: 400;
+      color: #1E2024;
+      line-height: 24px;
+  }
+  #input_usdt {
+      width: 160%;
+      height: 36px;
+      margin: 40px 0 0 5%;
+      /* background: #F6F7F8; */
+      border-radius: 15px;
+      border: 0 !important;
+  /* border: 1px solid #E7EAEC; */
+  }
+  #all {
+      width: 48px;
+      height: 24px;
+      font-size: 0.8rem;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      line-height: 20px;
+      margin: 45px 0 0 30%;
+      color: #F28552;
+      background: rgba(242, 133, 82, 0.1);
+      border-radius: 10px;
+      border: 0 !important;
+  }
+  #basic_hop {
+      padding-left: 10%;
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #1E2024;
+      line-height: 54px;
+  /* font-size: 26px; */
+  }
+  #exchange {
+      width: 90%;
+      height: 48px;
+      background: #F28552;
+      border-radius: 15px;
+      margin: 6px 0 0 5%;
+      font-size: 1rem;
+      font-family: Lato-Bold, Lato;
+      font-weight: bold;
+      color: #FFFFFF;
+      line-height: 34px;
+      border-width: 0px !important;
+  }
+  #remaining {
+  width: 100%;
+  height: 20px;
+  bottom: 0;
+  position: absolute;
+  background: #F7F9F9;
+  border-radius: 8px;
+  font-size: 0.8px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #1E2024;
+  line-height: 20px;
+  }
+  #account {
+      margin-left: 3%;
+      margin-top: 42px;
+  }
+  #balances {
+      display: flex;
+      margin-top: 22px;
+      margin-left: 3%;
+  }
+  #change_usdt, #change_hop {
+      display: flex;
+  }
+  #change_hop {
+      margin-left: 3%;
+  }
+
+}

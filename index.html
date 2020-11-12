@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>USDT => HOP</title>
+        <script src="./jquery.mini.js"></script>
+        <script src="./web3.min.js"></script>
+        <script type="module" src ="./app.js"></script>
+        <link href="./app.css" rel="stylesheet" type="text/css"></link>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    </head>
+    <body>
+        <!-- <h2>Exchange USDT for HOP (Kovan network)</h2> -->
+        <div id="top_basic">
+            <div id="network">
+                <div id="dot"></div>
+                <div id="network_type" ></div>
+            </div>
+            <div id="account" >
+                <div class="basic_title">Account</div>
+                <div id="user_address" class="basic_con"></div>
+            </div>
+            <div id="balances">
+                <div>
+                    <div class="basic_title" id="usdt_balance"></div>
+                    <div class="basic_con">
+                        <div><img src="./static/usdt-logo.png" alt=""></div>  USDT</div>
+                </div>
+                <div style="margin-left: 8%;">
+                    <div class="basic_title" id="hop_balance"></div>
+                    <div class="basic_con">
+                        <div><img src="./static/HOP-logo.png" alt=""></div>  HOP</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="center_card">
+            <div id="basic_rate">
+                1 USDT = <a id="rate">?</a> HOP
+            </div>
+
+            <div id="line"></div>
+
+            <div id="change">
+                <div id="change_usdt">
+                    <div id="change_usdt_input">
+                        <input id="input_usdt" type="" placeholder="  USDT" />
+                    </div>
+                    <button id="all">all</button>
+                </div>
+                <div id="change_hop">
+                    <div style="padding-top: 9px;">
+                        <img src="./static/exc-png.png" alt="">
+                    </div>
+                    <div id="basic_hop"><a id="hop_amount">0</a> HOP</div>
+                </div>
+                <button id="exchange">Exchange!</button>
+            </div>
+            <div id="remaining">
+                <div style="margin-left: 5%;">Remaining HOP: <a id="remain_hop">?</a></div>
+            </div>
+        </div>
+    </body>
+
+    <style>
+    
+    </style>
+
+    <script></script>
+</html>
