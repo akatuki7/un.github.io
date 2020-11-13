@@ -18,6 +18,15 @@ body {
   border-radius: 8px;
   position: relative;
 }
+.hop_card {
+  width: 75%;
+  /* height: 120px; */
+  margin: 3% 0 0 10%;
+  padding: 2% 0 2% 5%;
+  background-color: #FFFFFF;
+  box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.11);
+  border-radius: 8px;
+}
 #network {
   width: 160px;
   height: 32px;
@@ -39,7 +48,7 @@ body {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #AAACAD;
-  line-height: 25px;
+  line-height: 27px;
 }
 #basic_rate {
   font-size: 26px;
@@ -51,7 +60,7 @@ body {
   text-align: center;
 }
 #line {
-  width: 96%;
+  width: 80%;
   height: 1px;
   margin: 0 0 2% 80px;
   background: #E1E5E7;
@@ -71,11 +80,29 @@ body {
   line-height: 32px;
 }
 #input_usdt {
-  width: 70%;
   height: 42px;
+}
+#input_usdt,
+#new_rate,
+#f_addr,
+#b_addr {
+  width: 70%;
   background: #F6F7F8;
   border-radius: 15px;
   border: 1px solid #E7EAEC;
+}
+#new_rate,
+#f_addr,
+#b_addr {
+  margin: 3px 6px 0 0;
+  height: 30px;
+}
+#new_rate {
+  width: 61%;
+}
+#f_addr,
+#b_addr {
+  width: 30%;
 }
 #all {
   width: 58px;
@@ -100,17 +127,28 @@ body {
   line-height: 54px;
 }
 #exchange {
-  width: 10%;
   height: 42px;
+  line-height: 34px;
+  margin-top: 6px;
+}
+#exchange,
+#approve_hop,
+#set_rate,
+#change_address {
+  width: 10%;
   background: #F28552;
   border-radius: 15px;
-  margin-top: 6px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-family: Lato-Bold, Lato;
   font-weight: bold;
   color: #FFFFFF;
-  line-height: 34px;
   border-width: 0px !important;
+}
+#approve_hop {
+  height: 27px;
+  line-height: 20px;
+  margin: 2px 0 0 10px;
+  margin-top: 2px;
 }
 #remaining {
   width: 100%;
@@ -135,8 +173,11 @@ body {
   margin-left: 23%;
   margin-top: 42px;
 }
-#change, #change_hop {
+#change, #change_hop, #approve_btn {
   display: flex;
+}
+#approve_btn {
+  margin: 10px 0 5px 0;
 }
 #change_hop {
   width: 40%;
@@ -147,7 +188,10 @@ body {
 #change_usdt_input {
   margin: 8px 0 8px 30%;
 }
-
+.input_line {
+  display: flex;
+  margin: 1% 0 2% 0;
+}
 }
 
 @media screen and (max-device-width: 660px) {
@@ -173,6 +217,16 @@ body {
       border-radius: 12px;
       position: relative;
   }
+  .hop_card {
+      width: 87%;
+      /* height: 180px; */
+      margin: 3% 0 0 4%;
+      padding: 2% 0 2% 5%;
+      background-color: #FFFFFF;
+      box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.11);
+      border-radius: 12px;
+      position: relative;
+  }
   #network {
       width: 102px;
       height: 26px;
@@ -193,7 +247,7 @@ body {
       line-height: 24px;
   }
   .basic_con {
-      width: 120px;
+      /* width: 120px; */
       height: 20px;
       font-size: 0.6rem;
       font-family: PingFangSC-Regular, PingFang SC;
@@ -246,6 +300,16 @@ body {
       border: 0 !important;
   /* border: 1px solid #E7EAEC; */
   }
+  #new_rate,
+  #f_addr,
+  #b_addr {
+    width: 90%;
+    background: #F6F7F8;
+    border-radius: 15px;
+    border: 1px solid #E7EAEC;
+    margin: 3px 6px 10px 10px;
+    height: 30px;
+  }
   #all {
       width: 48px;
       height: 24px;
@@ -253,14 +317,14 @@ body {
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       line-height: 20px;
-      margin: 45px 0 0 10%;
+      margin: 45px 10% 0 0;
       color: #F28552;
       background: rgba(242, 133, 82, 0.1);
       border-radius: 10px;
       border: 0 !important;
   }
   #basic_hop {
-      padding-left: 10%;
+      padding-right: 10%;
       font-size: 16px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
@@ -269,17 +333,25 @@ body {
   /* font-size: 26px; */
   }
   #exchange {
-      width: 90%;
-      height: 45px;
-      background: #F28552;
-      border-radius: 15px;
-      margin: 6px 0 0 5%;
-      font-size: 1rem;
-      font-family: Lato-Bold, Lato;
-      font-weight: bold;
-      color: #FFFFFF;
-      line-height: 34px;
-      border-width: 0px !important;
+    height: 45px;
+    line-height: 34px;
+    margin: 6px 0 0 5%;
+  }
+  #exchange,
+  #approve_hop {
+    width: 90%;
+    background: #F28552;
+    border-radius: 15px;
+    font-size: 1rem;
+    font-family: Lato-Bold, Lato;
+    font-weight: bold;
+    color: #FFFFFF;
+    line-height: 23px;
+    border-width: 0px !important;
+  }
+  #approve_hop {
+    height: 25px;
+    margin: 6px 0 0 2%;
   }
   #remaining {
   width: 100%;
@@ -305,10 +377,34 @@ body {
   }
   #change_usdt, #change_hop {
       display: flex;
+      justify-content: space-between;
   }
   #change_hop {
       margin-left: 3%;
   }
+  #approve_btn {
+    /* display: flex; */
+    margin: 10px 0 5px 0;
+    /* justify-content: space-between; */
+  }
+
+  #set_rate,
+  #change_address {
+    width: 90%;
+    height: 42px;
+    margin: 2px 0 0 10px;
+    background: #F28552;
+    border-radius: 15px;
+    font-size: 1rem;
+    font-family: Lato-Bold, Lato;
+    font-weight: bold;
+    color: #FFFFFF;
+    border-width: 0px !important;
+}
+
+.input_line {
+  margin: 1% 0 2% 0;
+}
 
 }
 

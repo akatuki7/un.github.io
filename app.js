@@ -38,13 +38,45 @@ window.app = {};
     window.app.usdt = new web3.eth.Contract(USDT_abi, USDT_address)
     window.app.exchange = new web3.eth.Contract(exchange_abi, exchange_address)
     window.app.mutipler = await window.app.exchange.methods.mutiplier().call()
+    window.app.beneficiary = await window.app.exchange.methods.beneficiary().call()
+    window.app.fundAddress = await window.app.exchange.methods.fund().call() 
+    window.app.owner = await window.app.exchange.methods.owner().call()
+    if(window.app.current_account == window.app.owner){
+        $("#contract_owner").show()
+    }
+    if(window.app.current_account == window.app.fundAddress){
+        $("#hop_woner").show()
+    }
+    window.app.totalHop = await app.hop.methods.totalSupply().call()
+    $("#owner_addr").html(window.app.owner)
+    $("#fund_addr").html(window.app.fundAddress)
+
+
     //init
+    // await showConfigs()
     syncBalance()
     showExchangeRate()
     attachEvents()
     await showFund()
 })();
 
+// async function showConfigs() {
+//     let accounts = await web3.eth.getAccounts();
+//     let fundAddress = await window.app.exchange.methods.fund().call();
+//     let ownerAddress = await window.app.exchange.methods.owner().call();
+//     console.log(account[0] == fundAddress);
+//     if (account[0] == fundAddress) {
+//         console.log("account[0]", accounts[0]);
+//         console.log("window.app.fundAddress", fundAddress);
+//         $("#hop_woner").show()
+//     }
+//     console.log(account[0] == ownerAddress);
+//     if (account[0] == ownerAddress) {
+//         console.log("account[0]", accounts[0]);
+//         console.log("window.app.owner", ownerAddress);
+//         $("#contract_owner").show()
+//     }
+// }
 
 function syncBalance() {
     {
@@ -72,6 +104,9 @@ async function showFund() {
     let fundAllowance = await window.app.hop.methods.allowance(fundAddress, exchange_address).call()
     let remain = (fundBalance < fundAllowance ? fundBalance : fundAllowance) / 1e18
     $("#remain_hop").html(remain)
+    let remain_usdt = await window.app.usdt.methods.balanceOf(window.app.beneficiary).call()
+    $("#remain_usdt").html(remain_usdt / 1e6)
+    $("#allowance").html(window.app.totalHop / 1e18)
 }
 
 function attachEvents() {
@@ -105,5 +140,31 @@ function attachEvents() {
             syncBalance()
             await showFund()
         })
+    })
+
+    $("#approve_hop").click(()=>{
+        window.app.hop.methods.approve(exchange_address, window.app.fundBalance).send({from: window.app.fundAddress})
+                    .then(async ()=>{
+                        alert("approve success!")
+                        await showFund()
+                    })
+    })
+
+    $("#set_rate").click(()=>{
+        let r = $("#new_rate").val()
+        window.app.exchange.methods.setRate(r).send({from: window.app.owner})
+                            .then(async ()=>{
+                                alert("rate changed!")
+                                await showExchangeRate()
+                            })
+    })
+
+    $("#change_address").click(()=>{
+        let f_address = $("#f_addr").val()
+        let b_address = $("#b_addr").val()
+        window.app.exchange.methods.changeAddress(f_address, b_address).send({from: window.app.owner})
+                        .then(()=>{
+                            alert("address changed, please reload")
+                        })
     })
 }

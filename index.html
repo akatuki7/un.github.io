@@ -59,6 +59,30 @@
                 <div style="margin-left: 5%;">Remaining HOP: <a id="remain_hop">?</a></div>
             </div>
         </div>
+
+        <div class="hop_card" id="hop_woner" hidden>
+            <div class="basic_title">HOP fund:</div>
+            <a id="fund_addr" class="basic_con"></a>
+            <div id="approve_btn">
+                <div class="basic_con">Approve<a id="allowance">?</a>HOP for exchange:</div>
+                <button id="approve_hop">approve</button>
+            </div>
+        </div>
+
+        <div id="contract_owner" class="hop_card" hidden>
+            <div class="basic_title">Owner:</div>
+            <a id="owner_addr" class="basic_con"></a>
+            <div class="input_line">
+                <input id="new_rate" type="number" placeholder=" set rate (number of hop per 1000000 usdt)" />
+                <button id="set_rate">set</button>
+            </div>
+            <div class="basic_title" style="margin-top: 10px;">Change Address:</div>
+            <div class="input_line">
+                <input id="f_addr" type="number" placeholder=" fund address" />
+                <input id="b_addr" type="number" placeholder=" beneficiary address" />
+                <button id="change_address">set</button>
+            </div>
+        </div>
     </body>
 
     <style>
