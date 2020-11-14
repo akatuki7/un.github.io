@@ -1,8 +1,9 @@
 import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
 
-window.app = {};
 
-(async () => {
+
+(window.onload = async () => {
+    window.app = {};
     // Modern dApp browsers...
     if (window.ethereum) {
         $("#broswer_type").val("modern")
@@ -143,7 +144,7 @@ function attachEvents() {
     })
 
     $("#approve_hop").click(()=>{
-        window.app.hop.methods.approve(exchange_address, window.app.fundBalance).send({from: window.app.fundAddress})
+        window.app.hop.methods.approve(exchange_address, window.app.totalHop).send({from: window.app.fundAddress})
                     .then(async ()=>{
                         alert("approve success!")
                         await showFund()
