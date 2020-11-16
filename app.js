@@ -1,7 +1,7 @@
 import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
 
 
-(window.onload = async () => {
+(async () => {
     window.app = {};
     // Modern dApp browsers...
     if (window.ethereum) {
@@ -28,6 +28,7 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
         window.alert("Please connect to Metamask.")
     }
 
+    window.BN = web3.utils.BN
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
     // console.log(accounts);
@@ -62,13 +63,13 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
     
 
 
-    //init
+    // init
     syncBalance()
     showExchangeRate()
     await handleTime()
     attachEvents()
     await showFund()
-    // await showHopCredit()
+    await showHopCredit()
 })();
 
 async function handleTime() {
@@ -140,10 +141,10 @@ async function showFund() {
     $("#allowance").html(window.app.totalHop / 1e18)
 }
 
-// async function showHopCredit() {
-//     let credit = await window.app.exchange.methods.HOPCredit(window.app.current_account).call()
-//     console.log("credit", credit);
-// }
+async function showHopCredit() {
+    let credit = await window.app.exchange.methods.HOPCredit(window.app.current_account).call()
+    console.log("credit", credit);
+}
 
 function attachEvents() {
     $("#input_usdt").keyup(() => {
@@ -159,12 +160,14 @@ function attachEvents() {
     })
 
     $("#exchange").click(async () => {
-        let number = $("#input_usdt").val()
-        if (number > $("#usdt_balance").html()) {
+        let number = new BN($("#input_usdt").val())
+        let balance = new BN($("#usdt_balance").html())
+
+        if (number.gt(balance)) {
             alert("not enough USDT!")
             return
         }
-        let cost = Math.round(number * 1e6)
+        let cost = number.mul(new BN(1e6))
         let address = window.app.current_account
         let allowance = await window.app.usdt.methods.allowance(address, exchange_address).call()
         if (allowance / 1e6 < number) {
