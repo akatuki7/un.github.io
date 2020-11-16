@@ -13,6 +13,7 @@ async function start() {
 
     //connect wallet
     await connectWallet()
+    window.BN = web3.utils.BN
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
     // console.log(accounts);
@@ -22,17 +23,24 @@ async function start() {
     window.app.hop = new web3.eth.Contract(HOP_abi, HOP_address)
     window.app.usdt = new web3.eth.Contract(USDT_abi, USDT_address)
     window.app.exchange = new web3.eth.Contract(exchange_abi, exchange_address)
-    window.app.mutipler = await window.app.exchange.methods.mutiplier().call()
-    window.app.beneficiary = await window.app.exchange.methods.beneficiary().call()
-    window.app.fundAddress = await window.app.exchange.methods.fund().call() 
-    window.app.owner = await window.app.exchange.methods.owner().call()
+    let p1 = window.app.exchange.methods.mutiplier().call() 
+    let p2 = window.app.exchange.methods.beneficiary().call()
+    let p3 = window.app.exchange.methods.fund().call()
+    let p4 = window.app.exchange.methods.owner().call()
+    let p5 = window.app.hop.methods.totalSupply().call()
+    Promise.all([p1,p2,p3,p4,p5]).then((values)=>{
+        window.app.mutipler = values[0]
+        window.app.beneficiary = values[1]
+        window.app.fundAddress = values[2]
+        window.app.owner = values[3]
+        window.app.totalHop = values[4]
+    })
     if(window.app.current_account == window.app.owner) {
         $("#contract_owner").show()
     }
     if(window.app.current_account == window.app.fundAddress) {
         $("#hop_woner").show()
     }
-    window.app.totalHop = await app.hop.methods.totalSupply().call()
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
 
@@ -50,7 +58,7 @@ async function start() {
     await handleTime()
     attachEvents()
     await showFund()
-    // await showHopCredit()
+    await showHopCredit()
 }
 
 async function connectWallet() {
@@ -148,10 +156,10 @@ async function showFund() {
     $("#allowance").html(window.app.totalHop / 1e18)
 }
 
-// async function showHopCredit() {
-//     let credit = await window.app.exchange.methods.HOPCredit(window.app.current_account).call()
-//     console.log("credit", credit);
-// }
+async function showHopCredit() {
+    let credit = await window.app.exchange.methods.HOPCredit(window.app.current_account).call()
+    console.log("credit", credit);
+}
 
 function attachEvents() {
 
@@ -168,12 +176,14 @@ function attachEvents() {
     })
 
     $("#exchange").click(async () => {
-        let number = $("#input_usdt").val()
-        if (number > $("#usdt_balance").html()) {
+        let number = new BN($("#input_usdt").val())
+        let balance = new BN($("#usdt_balance").html())
+
+        if (number.gt(balance)) {
             alert("not enough USDT!")
             return
         }
-        let cost = Math.round(number * 1e6)
+        let cost = number.mul(new BN(1e6))
         let address = window.app.current_account
         let allowance = await window.app.usdt.methods.allowance(address, exchange_address).call()
         if (allowance / 1e6 < number) {
@@ -190,6 +200,7 @@ function attachEvents() {
     $("#claim").click(async () => {
         window.app.exchange.methods.claimHOP().send({from: window.app.current_account}).then(async () => {
             alert("claim succeed!")
+            syncBalance()
         })
     })
 
