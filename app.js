@@ -191,6 +191,7 @@ function attachEvents() {
     $("#claim").click(async () => {
         window.app.exchange.methods.claimHOP().send({from: window.app.current_account}).then(async () => {
             alert("claim succeed!")
+            syncBalance()
         })
     })
 
