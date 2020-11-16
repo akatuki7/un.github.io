@@ -88,7 +88,6 @@ async function handleTime() {
         $("#exchange").css("background","#AAACAD")
     }
     if (now < window.app.releaseTime * 1000) {
-        console.log("ok");
         $("#claim").attr('disabled', true)
         $("#claim").css("background","#AAACAD")
     }
