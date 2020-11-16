@@ -1,33 +1,18 @@
 import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
 
+window.onload = async () => {
+    $("#network").click(async () => {
+        ethereum.request({ method: 'eth_requestAccounts' });
+        await start()
+    })
+}
 
-(window.onload = async () => {
+async function start() {
     window.app = {};
     // Modern dApp browsers...
-    if (window.ethereum) {
-        $("#broswer_type").val("modern")
-        window.web3 = new Web3(ethereum)
-        try {
-            await ethereum.enable()
-        } catch (error) {
-            alert(error)
-        }
-    }
-    // Legacy dApp browsers...
-    else if (window.web3) {
-        $("#broswer_type").val("Legacy")
-        window.web3 = new Web3(web3.currentProvider)
-    }
-    // Non-dApp browsers...
-    else {
-        $("#broswer_type").val("none")
-    }
-    if (typeof web3 !== 'undefined') {
-        web3 = new Web3(web3.currentProvider)
-    } else {
-        window.alert("Please connect to Metamask.")
-    }
 
+    //connect wallet
+    await connectWallet()
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
     // console.log(accounts);
@@ -59,9 +44,6 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
         location.reload()
     })
 
-    
-
-
     //init
     syncBalance()
     showExchangeRate()
@@ -69,7 +51,34 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
     attachEvents()
     await showFund()
     // await showHopCredit()
-})();
+}
+
+async function connectWallet() {
+    // Modern dApp browsers...
+    if (window.ethereum) {
+        $("#broswer_type").val("modern")
+        window.web3 = new Web3(ethereum)
+        try {
+            await ethereum.enable()
+        } catch (error) {
+            alert(error)
+        }
+    }
+    // Legacy dApp browsers...
+    else if (window.web3) {
+        $("#broswer_type").val("Legacy")
+        window.web3 = new Web3(web3.currentProvider)
+    }
+    // Non-dApp browsers...
+    else {
+        $("#broswer_type").val("none")
+    }
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider)
+    } else {
+        window.alert("Please connect to Metamask.")
+    }
+}
 
 async function handleTime() {
     window.app.stopTime = await window.app.exchange.methods.exchangeStopTime().call()
@@ -145,6 +154,7 @@ async function showFund() {
 // }
 
 function attachEvents() {
+
     $("#input_usdt").keyup(() => {
         let number = $("#input_usdt").val()
         $("#hop_amount").html(number * window.app.mutipler / 1e12)
