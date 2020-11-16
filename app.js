@@ -38,17 +38,24 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
     window.app.hop = new web3.eth.Contract(HOP_abi, HOP_address)
     window.app.usdt = new web3.eth.Contract(USDT_abi, USDT_address)
     window.app.exchange = new web3.eth.Contract(exchange_abi, exchange_address)
-    window.app.mutipler = await window.app.exchange.methods.mutiplier().call()
-    window.app.beneficiary = await window.app.exchange.methods.beneficiary().call()
-    window.app.fundAddress = await window.app.exchange.methods.fund().call() 
-    window.app.owner = await window.app.exchange.methods.owner().call()
+    let p1 = window.app.exchange.methods.mutiplier().call() 
+    let p2 = window.app.exchange.methods.beneficiary().call()
+    let p3 = window.app.exchange.methods.fund().call()
+    let p4 = window.app.exchange.methods.owner().call()
+    let p5 = window.app.hop.methods.totalSupply().call()
+    Promise.all([p1,p2,p3,p4,p5]).then((values)=>{
+        window.app.mutipler = values[0]
+        window.app.beneficiary = values[1]
+        window.app.fundAddress = values[2]
+        window.app.owner = values[3]
+        window.app.totalHop = values[4]
+    })
     if(window.app.current_account == window.app.owner) {
         $("#contract_owner").show()
     }
     if(window.app.current_account == window.app.fundAddress) {
         $("#hop_woner").show()
     }
-    window.app.totalHop = await app.hop.methods.totalSupply().call()
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
 
