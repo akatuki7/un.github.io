@@ -17,6 +17,7 @@ body {
   box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.11);
   border-radius: 8px;
   position: relative;
+  justify-content: space-between;
 }
 .hop_card {
   width: 75%;
@@ -30,7 +31,7 @@ body {
 #network {
   width: 160px;
   height: 32px;
-  margin: 0 0 0 23%;
+  margin: 0 0 0 13%;
   display: inline-flex;
   border-radius: 15px;
   border: 2px solid #CACCCD;
@@ -48,7 +49,7 @@ body {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #AAACAD;
-  line-height: 27px;
+  line-height: 37px;
 }
 #basic_rate {
   font-size: 26px;
@@ -119,23 +120,29 @@ body {
 }
 #basic_hop {
   width: 60%;
-  padding-left: 10%;
+  padding-left: 12%;
   font-size: 1.2rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #1E2024;
   line-height: 54px;
 }
-#exchange {
-  height: 42px;
-  line-height: 34px;
-  margin-top: 6px;
+#handle_btns {
+  margin: 20px 0 0 12%;
+  justify-content: space-between;
 }
+#exchange,
+#claim {
+  /* height: 42px; */
+  /* line-height: 34px; */
+  margin: 6px 6px 0 0;
+}
+#claim,
 #exchange,
 #approve_hop,
 #set_rate,
 #change_address {
-  width: 10%;
+  width: 44%;
   background: #F28552;
   border-radius: 15px;
   font-size: 1rem;
@@ -145,7 +152,7 @@ body {
   border-width: 0px !important;
 }
 #approve_hop {
-  height: 27px;
+  height: 37px;
   line-height: 20px;
   margin: 2px 0 0 10px;
   margin-top: 2px;
@@ -167,10 +174,10 @@ body {
 #balances {
   display: flex;
   margin-top: 22px;
-  margin-left: 23%;
+  margin-left: 18%;
 }
 #account {
-  margin-left: 23%;
+  margin-left: 18%;
   margin-top: 42px;
 }
 #change, #change_hop, #approve_btn {
@@ -180,17 +187,17 @@ body {
   margin: 10px 0 5px 0;
 }
 #change_hop {
-  width: 40%;
+  width: 60%;
 }
 #change_usdt {
-  width: 40%;
+  width: 57%;
 }
 #change_usdt_input {
   margin: 8px 0 8px 30%;
 }
 .input_line {
   display: flex;
-  margin: 1% 0 2% 0;
+  margin: 1% 4% 2% 0;
 }
 }
 
@@ -210,7 +217,7 @@ body {
   }
   #center_card {
       width: 92%;
-      height: 260px;
+      height: 290px;
       margin: 0 0 0 4%;
       background-color: #FFFFFF;
       box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.11);
@@ -332,11 +339,13 @@ body {
       line-height: 54px;
   /* font-size: 26px; */
   }
+  #claim,
   #exchange {
     height: 45px;
-    line-height: 34px;
+    /* line-height: 34px; */
     margin: 6px 0 0 5%;
   }
+  #claim,
   #exchange,
   #approve_hop {
     width: 90%;
@@ -367,13 +376,13 @@ body {
   line-height: 20px;
   }
   #account {
-      margin-left: 3%;
+      margin-left: 5%;
       margin-top: 42px;
   }
   #balances {
       display: flex;
       margin-top: 22px;
-      margin-left: 3%;
+      margin-left: 5%;
   }
   #change_usdt, #change_hop {
       display: flex;
@@ -403,11 +412,16 @@ body {
 }
 
 .input_line {
-  margin: 1% 0 2% 0;
+  margin: 1% 4% 2% 0;
 }
 
 }
 
 input {
   font-size: 16px;
+}
+
+#stop_time,
+#release_time {
+  font-size: 12px;
 }

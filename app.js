@@ -1,7 +1,6 @@
 import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
 
 
-
 (window.onload = async () => {
     window.app = {};
     // Modern dApp browsers...
@@ -42,42 +41,68 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
     window.app.beneficiary = await window.app.exchange.methods.beneficiary().call()
     window.app.fundAddress = await window.app.exchange.methods.fund().call() 
     window.app.owner = await window.app.exchange.methods.owner().call()
-    if(window.app.current_account == window.app.owner){
+    if(window.app.current_account == window.app.owner) {
         $("#contract_owner").show()
     }
-    if(window.app.current_account == window.app.fundAddress){
+    if(window.app.current_account == window.app.fundAddress) {
         $("#hop_woner").show()
     }
     window.app.totalHop = await app.hop.methods.totalSupply().call()
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
 
+    ethereum.on('accountsChanged', async () => {
+        location.reload()
+    })
+
+    ethereum.on('chainChanged', async () => {
+        location.reload()
+    })
+
+    
+
 
     //init
-    // await showConfigs()
     syncBalance()
     showExchangeRate()
+    await handleTime()
     attachEvents()
     await showFund()
+    // await showHopCredit()
 })();
 
-// async function showConfigs() {
-//     let accounts = await web3.eth.getAccounts();
-//     let fundAddress = await window.app.exchange.methods.fund().call();
-//     let ownerAddress = await window.app.exchange.methods.owner().call();
-//     console.log(account[0] == fundAddress);
-//     if (account[0] == fundAddress) {
-//         console.log("account[0]", accounts[0]);
-//         console.log("window.app.fundAddress", fundAddress);
-//         $("#hop_woner").show()
-//     }
-//     console.log(account[0] == ownerAddress);
-//     if (account[0] == ownerAddress) {
-//         console.log("account[0]", accounts[0]);
-//         console.log("window.app.owner", ownerAddress);
-//         $("#contract_owner").show()
-//     }
-// }
+async function handleTime() {
+    window.app.stopTime = await window.app.exchange.methods.exchangeStopTime().call()
+    window.app.releaseTime = await window.app.exchange.methods.releaseHopTime().call()
+    const st = new Date(window.app.stopTime * 1000)
+    const rt = new Date(window.app.releaseTime * 1000);
+    
+    let stop_time = formatDate(st)
+    let release_time = formatDate(rt)
+    $("#stop_time").html(stop_time)
+    $("#release_time").html(release_time)
+
+    let now = (new Date()).getTime();
+    if (now > window.app.stopTime * 1000) {
+        $("#exchange").attr('disabled', true)
+        $("#exchange").css("background","#AAACAD")
+    }
+    if (now < window.app.releaseTime * 1000) {
+        console.log("ok");
+        $("#claim").attr('disabled', true)
+        $("#claim").css("background","#AAACAD")
+    }
+}
+
+function formatDate(now) {
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var date = now.getDate();
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+    var second = now.getSeconds();
+    return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+}
 
 function syncBalance() {
     {
@@ -92,6 +117,11 @@ function syncBalance() {
                 $("#usdt_balance").html(x / 1e6 + "")
             }
         );
+        window.app.exchange.methods.HOPCredit(account).call().then(
+            (x) => {
+                $("#credit_balance").html(x / 1e18 + "" )
+            }
+        )
     }
 }
 
@@ -109,6 +139,11 @@ async function showFund() {
     $("#remain_usdt").html(remain_usdt / 1e6)
     $("#allowance").html(window.app.totalHop / 1e18)
 }
+
+// async function showHopCredit() {
+//     let credit = await window.app.exchange.methods.HOPCredit(window.app.current_account).call()
+//     console.log("credit", credit);
+// }
 
 function attachEvents() {
     $("#input_usdt").keyup(() => {
@@ -140,6 +175,12 @@ function attachEvents() {
             alert("exchange succeed!")
             syncBalance()
             await showFund()
+        })
+    })
+
+    $("#claim").click(async () => {
+        window.app.exchange.methods.claimHOP().send({from: window.app.current_account}).then(async () => {
+            alert("claim succeed!")
         })
     })
 

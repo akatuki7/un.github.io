@@ -25,10 +25,15 @@
                     <div class="basic_con">
                         <div><img src="./static/usdt-logo.png" alt=""></div>  USDT</div>
                 </div>
-                <div style="margin-left: 8%;">
+                <div style="margin-left: 2%;">
                     <div class="basic_title" id="hop_balance"></div>
                     <div class="basic_con">
                         <div><img src="./static/HOP-logo.png" alt=""></div>  HOP</div>
+                </div>
+                <div style="margin-left: 2%;">
+                    <div class="basic_title" id="credit_balance"></div>
+                    <div class="basic_con">
+                        <div><img src="./static/HOP-logo.png" alt=""></div>  Credit</div>
                 </div>
             </div>
         </div>
@@ -53,14 +58,18 @@
                     </div>
                     <div id="basic_hop"><a id="hop_amount">0</a> HOP</div>
                 </div>
-                <button id="exchange">Exchange!</button>
             </div>
+            <div id="handle_btns">
+                <button id="exchange">Exchange!<br/><span style="font-size: 12px;">Before: </span><span id="stop_time"></span></button>
+                <button id="claim">Claim!<br/><span style="font-size: 12px;">After: </span><span id="release_time"></span></button>
+            </div>
+            
             <div id="remaining">
                 <div style="margin-left: 5%;">Remaining HOP: <a id="remain_hop">?</a></div>
             </div>
         </div>
 
-        <div class="hop_card" id="hop_woner" hidden>
+        <div class="hop_card" id="hop_woner">
             <div class="basic_title">HOP fund:</div>
             <a id="fund_addr" class="basic_con"></a>
             <div id="approve_btn">
@@ -69,17 +78,17 @@
             </div>
         </div>
 
-        <div id="contract_owner" class="hop_card" hidden>
+        <div id="contract_owner" class="hop_card">
             <div class="basic_title">Owner:</div>
             <a id="owner_addr" class="basic_con"></a>
             <div class="input_line">
-                <input id="new_rate" type="number" placeholder=" set rate (number of hop per 1000000 usdt)" />
+                <input id="new_rate" type="number" placeholder=" set rate(number of hop per 1000000 usdt)" />
                 <button id="set_rate">set</button>
             </div>
             <div class="basic_title" style="margin-top: 10px;">Change Address:</div>
             <div class="input_line">
-                <input id="f_addr"  placeholder=" fund address" />
-                <input id="b_addr"  placeholder=" beneficiary address" />
+                <input id="f_addr" placeholder=" fund address" />
+                <input id="b_addr" placeholder=" beneficiary address" />
                 <button id="change_address">set</button>
             </div>
         </div>
