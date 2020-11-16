@@ -21,7 +21,7 @@ async function start() {
     // Modern dApp browsers...
 
     //connect wallet
-    await connectWallet()
+    // await connectWallet()
     window.BN = web3.utils.BN
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
@@ -68,31 +68,6 @@ async function start() {
     attachEvents()
     await showFund()
     await showHopCredit()
-}
-
-async function connectWallet() {
-    // Modern dApp browsers...
-    if (window.ethereum) {
-        $("#broswer_type").val("modern")
-        try {
-            await ethereum.enable()
-        } catch (error) {
-            alert(error)
-        }
-    }
-    // Legacy dApp browsers...
-    else if (window.web3) {
-        cons
-        $("#broswer_type").val("Legacy")
-        window.web3 = new Web3(web3.currentProvider)
-    }
-    // Non-dApp browsers...
-    else {
-        $("#broswer_type").val("none")
-    }
-    if (typeof web3 == 'undefined') {
-        window.alert("Please connect to Metamask.")
-    }
 }
 
 async function handleTime() {
