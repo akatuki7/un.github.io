@@ -2,8 +2,13 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
 
 window.onload = async () => {
     $("#network").click(async () => {
-        ethereum.request({ method: 'eth_requestAccounts' });
-        await start()
+        if (typeof ethereum !== "undefined") {
+            await ethereum.request({ method: 'eth_requestAccounts' });
+            await start()
+        } else {
+            window.alert("Please install Metamask.")
+        }
+        
     })
 }
 
