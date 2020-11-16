@@ -156,6 +156,7 @@ contract USDTforHOP is Ownable{
     function claimHOP() public {
         require(now > releaseHopTime);
         uint256 credit = HOPCredit[msg.sender];
+        delete HOPCredit[msg.sender];
         require(credit > 0);
         ERC20(HOP).transfer(msg.sender, credit);
         Claim(msg.sender, credit);
