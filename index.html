@@ -5,7 +5,7 @@
         <link href="./app.css" rel="stylesheet" type="text/css"></link>
         <script src="./jquery.mini.js"></script>
         <script src="./web3.min.js"></script>
-        <script src ="./app.js"></script>
+        <script type="module" src ="./app.js"></script>
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     </head>
     <body>
@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <div class="hop_card" id="hop_woner">
+        <div class="hop_card" id="hop_woner" hidden>
             <div class="basic_title">HOP fund:</div>
             <a id="fund_addr" class="basic_con"></a>
             <div id="approve_btn">
@@ -78,7 +78,7 @@
             </div>
         </div>
 
-        <div id="contract_owner" class="hop_card">
+        <div id="contract_owner" class="hop_card" hidden>
             <div class="basic_title">Owner:</div>
             <a id="owner_addr" class="basic_con"></a>
             <div class="input_line">

@@ -50,11 +50,6 @@ async function start() {
         window.alert("Please connect to Metamask.")
     }
 
-<<<<<<< HEAD
-=======
-    //connect wallet
-    // await connectWallet()
->>>>>>> d2c6754c6163ce7015b365f232a860d9fba5b64f
     window.BN = web3.utils.BN
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
