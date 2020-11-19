@@ -5,11 +5,11 @@
         <link href="./app.css" rel="stylesheet" type="text/css"></link>
         <script src="./jquery.mini.js"></script>
         <script src="./web3.min.js"></script>
-        <script type="module" src ="./app.js"></script>
+        <script src ="./app.js"></script>
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     </head>
     <body>
-        <!-- <h2>Exchange USDT for HOP (Kovan network)</h2> -->
+        <h2 id="broswer_type" hidden>Exchange USDT for HOP (Kovan network)</h2>
         <div id="top_basic">
             <div id="network">
                 <div id="dot"></div>
@@ -98,5 +98,11 @@
     
     </style>
 
-    <script></script>
+    <script>
+        console.log("html file")
+        document.addEventListener('DOMContentLoaded',function(){
+            console.log('html DOMContentLoaded');
+        });
+
+    </script>
 </html>

@@ -1,23 +1,45 @@
-import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
+// import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
+
+document.addEventListener('DOMContentLoaded',function(){
+    console.log('appjs DOMContentLoaded');
+});
+
+(() => {
+    console.log("() appjs");
+})();
 
 window.onload = async () => {
+    console.log("window.onload");
+    window.app = {};
     $("#network").click(async () => {
-        if (typeof ethereum !== "undefined") {
-            await ethereum.request({ method: 'eth_requestAccounts' });
-            await start()
-        } else {
-            window.alert("Please install Metamask.")
-        }
-        
+        await start()
     })
 }
 
 async function start() {
-    window.app = {};
     // Modern dApp browsers...
+    if (window.ethereum) {
+        $("#broswer_type").html("modern")
+        window.web3 = new Web3(ethereum)
+        try {
+            // await ethereum.enable()
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            console.log("accounts", accounts);
+        } catch (error) {
+            alert(error)
+        }
+    }
+    // Legacy dApp browsers...
+    else if (window.web3) {
+        $("#broswer_type").html("Legacy")
+        window.web3 = new Web3(web3.currentProvider)
+    }
+    // Non-dApp browsers...
+    else {
+        $("#broswer_type").html("none")
+        window.alert("Please connect to Metamask.")
+    }
 
-    //connect wallet
-    await connectWallet()
     window.BN = web3.utils.BN
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
@@ -64,33 +86,6 @@ async function start() {
     attachEvents()
     await showFund()
     await showHopCredit()
-}
-
-async function connectWallet() {
-    // Modern dApp browsers...
-    if (window.ethereum) {
-        $("#broswer_type").val("modern")
-        window.web3 = new Web3(ethereum)
-        try {
-            await ethereum.enable()
-        } catch (error) {
-            alert(error)
-        }
-    }
-    // Legacy dApp browsers...
-    else if (window.web3) {
-        $("#broswer_type").val("Legacy")
-        window.web3 = new Web3(web3.currentProvider)
-    }
-    // Non-dApp browsers...
-    else {
-        $("#broswer_type").val("none")
-    }
-    if (typeof web3 !== 'undefined') {
-        web3 = new Web3(web3.currentProvider)
-    } else {
-        window.alert("Please connect to Metamask.")
-    }
 }
 
 async function handleTime() {
