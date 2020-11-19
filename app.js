@@ -1,4 +1,4 @@
-// import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
+import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
 
 document.addEventListener('DOMContentLoaded',function(){
     console.log('appjs DOMContentLoaded');
@@ -8,6 +8,15 @@ document.addEventListener('DOMContentLoaded',function(){
     console.log("() appjs");
 })();
 
+// (async ()=>{
+//     if (window.ethereum) {
+//         window.web3 = new Web3(ethereum)
+//     }
+//     $("#network").click(async () => {
+//         await start()
+//     })
+// })()
+
 window.onload = async () => {
     console.log("window.onload");
     window.app = {};
@@ -15,6 +24,7 @@ window.onload = async () => {
         await start()
     })
 }
+
 
 async function start() {
     // Modern dApp browsers...
@@ -40,6 +50,11 @@ async function start() {
         window.alert("Please connect to Metamask.")
     }
 
+<<<<<<< HEAD
+=======
+    //connect wallet
+    // await connectWallet()
+>>>>>>> d2c6754c6163ce7015b365f232a860d9fba5b64f
     window.BN = web3.utils.BN
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
@@ -229,4 +244,6 @@ function attachEvents() {
                             alert("address changed, please reload")
                         })
     })
+
+    
 }
