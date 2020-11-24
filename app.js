@@ -1,6 +1,6 @@
 import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
 
-document.addEventListener('DOMContentLoaded',function(){
+document.addEventListener('DOMContentLoaded', function () {
     console.log('appjs DOMContentLoaded');
 });
 
@@ -55,31 +55,32 @@ async function start() {
     $("#user_address").html(accounts[0]);
     // console.log(accounts);
     window.app.current_account = accounts[0];
+
     let network = await web3.eth.net.getNetworkType();
     $("#network_type").html(network)
     window.app.hop = new web3.eth.Contract(HOP_abi, HOP_address)
     window.app.usdt = new web3.eth.Contract(USDT_abi, USDT_address)
     window.app.exchange = new web3.eth.Contract(exchange_abi, exchange_address)
-    let p1 = window.app.exchange.methods.mutiplier().call() 
+    let p1 = window.app.exchange.methods.mutiplier().call()
     let p2 = window.app.exchange.methods.beneficiary().call()
     let p3 = window.app.exchange.methods.fund().call()
     let p4 = window.app.exchange.methods.owner().call()
     let p5 = window.app.hop.methods.totalSupply().call()
-    Promise.all([p1,p2,p3,p4,p5]).then((values)=>{
-        window.app.mutipler = values[0]
-        window.app.beneficiary = values[1]
-        window.app.fundAddress = values[2]
-        window.app.owner = values[3]
-        window.app.totalHop = values[4]
-    })
-    if(window.app.current_account == window.app.owner) {
+    let values = await Promise.all([p1, p2, p3, p4, p5])
+    window.app.mutipler = values[0]
+    window.app.beneficiary = values[1]
+    window.app.fundAddress = values[2]
+    window.app.owner = values[3]
+    window.app.totalHop = values[4]
+    if (window.app.current_account == window.app.owner) {
         $("#contract_owner").show()
     }
-    if(window.app.current_account == window.app.fundAddress) {
+    if (window.app.current_account == window.app.fundAddress) {
         $("#hop_woner").show()
     }
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
+
 
     ethereum.on('accountsChanged', async () => {
         location.reload()
@@ -103,7 +104,7 @@ async function handleTime() {
     window.app.releaseTime = await window.app.exchange.methods.releaseHopTime().call()
     const st = new Date(window.app.stopTime * 1000)
     const rt = new Date(window.app.releaseTime * 1000);
-    
+
     let stop_time = formatDate(st)
     let release_time = formatDate(rt)
     $("#stop_time").html(stop_time)
@@ -112,11 +113,11 @@ async function handleTime() {
     let now = (new Date()).getTime();
     if (now > window.app.stopTime * 1000) {
         $("#exchange").attr('disabled', true)
-        $("#exchange").css("background","#AAACAD")
+        $("#exchange").css("background", "#AAACAD")
     }
     if (now < window.app.releaseTime * 1000) {
         $("#claim").attr('disabled', true)
-        $("#claim").css("background","#AAACAD")
+        $("#claim").css("background", "#AAACAD")
     }
 }
 
@@ -145,7 +146,7 @@ function syncBalance() {
         );
         window.app.exchange.methods.HOPCredit(account).call().then(
             (x) => {
-                $("#credit_balance").html(x / 1e18 + "" )
+                $("#credit_balance").html(x / 1e18 + "")
             }
         )
     }
@@ -198,9 +199,9 @@ function attachEvents() {
         let allowance = await window.app.usdt.methods.allowance(address, exchange_address).call()
         if (allowance / 1e6 < number) {
             let totalSupply = await window.app.usdt.methods._totalSupply().call()
-            await window.app.usdt.methods.approve(exchange_address, totalSupply).send({from:address})
+            await window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
         }
-        window.app.exchange.methods.exchangeForHOP(cost).send({from:address}).then(async () => {
+        window.app.exchange.methods.exchangeForHOP(cost).send({ from: address }).then(async () => {
             alert("exchange succeed!")
             syncBalance()
             await showFund()
@@ -208,37 +209,37 @@ function attachEvents() {
     })
 
     $("#claim").click(async () => {
-        window.app.exchange.methods.claimHOP().send({from: window.app.current_account}).then(async () => {
+        window.app.exchange.methods.claimHOP().send({ from: window.app.current_account }).then(async () => {
             alert("claim succeed!")
             syncBalance()
         })
     })
 
-    $("#approve_hop").click(()=>{
-        window.app.hop.methods.approve(exchange_address, window.app.totalHop).send({from: window.app.fundAddress})
-                    .then(async ()=>{
-                        alert("approve success!")
-                        await showFund()
-                    })
+    $("#approve_hop").click(() => {
+        window.app.hop.methods.approve(exchange_address, window.app.totalHop).send({ from: window.app.fundAddress })
+            .then(async () => {
+                alert("approve success!")
+                await showFund()
+            })
     })
 
-    $("#set_rate").click(()=>{
+    $("#set_rate").click(() => {
         let r = $("#new_rate").val()
-        window.app.exchange.methods.setRate(r).send({from: window.app.owner})
-                            .then(async ()=>{
-                                alert("rate changed!")
-                                await showExchangeRate()
-                            })
+        window.app.exchange.methods.setRate(r).send({ from: window.app.owner })
+            .then(async () => {
+                alert("rate changed!")
+                await showExchangeRate()
+            })
     })
 
-    $("#change_address").click(()=>{
+    $("#change_address").click(() => {
         let f_address = $("#f_addr").val()
         let b_address = $("#b_addr").val()
-        window.app.exchange.methods.changeAddress(f_address, b_address).send({from: window.app.owner})
-                        .then(()=>{
-                            alert("address changed, please reload")
-                        })
+        window.app.exchange.methods.changeAddress(f_address, b_address).send({ from: window.app.owner })
+            .then(() => {
+                alert("address changed, please reload")
+            })
     })
 
-    
+
 }
