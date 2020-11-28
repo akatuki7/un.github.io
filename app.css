@@ -22,7 +22,7 @@ body {
 }
 
 .center_card {
-  height: 363px;
+  height: 350px;
 }
 
 .hop_card {
@@ -134,13 +134,13 @@ body {
   line-height: 54px;
 }
 #handle_btns {
-  margin: 20px 0 0 12%;
-  justify-content: space-between;
+  margin: 45px 0 0 36%;
+  /* justify-content: space-between; */
 }
 #exchange,
 #claim {
-  /* height: 42px; */
-  /* line-height: 34px; */
+  height: 42px;
+  line-height: 34px;
   margin: 6px 6px 0 0;
 }
 #claim,
@@ -248,7 +248,7 @@ body {
       position: relative;
   }
   .center_card {
-    height: 290px;
+    height: 235px;
   }
   .hop_card {
       width: 87%;
@@ -454,7 +454,7 @@ body {
   font-family: PingFangSC-Semibold, PingFang SC;
   font-weight: 600;
   line-height: 28px;
-  margin: 67px 0 0 23px;
+  margin: 67px 0 0 -10px;
 }
 
 }
@@ -490,4 +490,10 @@ input {
   font-weight: 400;
   color: #1E2024;
   line-height: 50px;
+}
+
+.tips {
+  margin-left: 2%;
+  font-size: 12px;
+  color: #AAACAD;
 }

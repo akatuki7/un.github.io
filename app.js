@@ -101,10 +101,10 @@ async function handleTime() {
         $("#exchange").attr('disabled', true)
         $("#exchange").css("background", "#AAACAD")
     }
-    if (now < window.app.releaseTime * 1000) {
-        $("#claim").attr('disabled', true)
-        $("#claim").css("background", "#AAACAD")
-    }
+    // if (now < window.app.releaseTime * 1000) {
+    //     $("#claim").attr('disabled', true)
+    //     $("#claim").css("background", "#AAACAD")
+    // }
 }
 
 function formatDate(now) {
