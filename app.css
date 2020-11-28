@@ -89,6 +89,8 @@ body {
 #input_usdt {
   height: 42px;
 }
+#append_value,
+#append_address,
 #input_usdt,
 #new_rate,
 #f_addr,
@@ -98,6 +100,8 @@ body {
   border-radius: 15px;
   border: 1px solid #E7EAEC;
 }
+#append_value,
+#append_address,
 #new_rate,
 #f_addr,
 #b_addr {
@@ -107,6 +111,8 @@ body {
 #new_rate {
   width: 61%;
 }
+#append_value,
+#append_address,
 #f_addr,
 #b_addr {
   width: 30%;
@@ -143,10 +149,12 @@ body {
   line-height: 34px;
   margin: 6px 6px 0 0;
 }
+#update,
 #claim,
 #exchange,
 #approve_hop,
 #set_rate,
+#append,
 #change_address {
   width: 44%;
   background: #F28552;
@@ -220,6 +228,15 @@ body {
   font-weight: 600;
   line-height: 32px;
   /* margin: 54px 0 0 -37px; */
+}
+
+#sell_record {
+  width: 100%;
+  height: 300px;
+  background: #F6F7F8;
+  border-radius: 15px;
+  border: 1px solid #E7EAEC;
+  margin: 3px 6px 0 0;
 }
 }
 
@@ -333,6 +350,8 @@ body {
       border: 0 !important;
   /* border: 1px solid #E7EAEC; */
   }
+  #append_address,
+  #append_value,
   #new_rate,
   #f_addr,
   #b_addr {
@@ -425,7 +444,8 @@ body {
     margin: 10px 0 5px 0;
     /* justify-content: space-between; */
   }
-
+  #update,
+  #append,
   #set_rate,
   #change_address {
     width: 90%;
@@ -438,24 +458,32 @@ body {
     font-weight: bold;
     color: #FFFFFF;
     border-width: 0px !important;
-}
+  }
 
-.input_line {
-  margin: 1% 4% 2% 0;
-}
-#claim_btn {
-  width: 70px;
-  height: 28px;
-  background: #F28552;
-  border-radius: 11px;
-  font-size: 0.6rem;
-  color: #FFFFFF;
-  border-width: 0px !important;
-  font-family: PingFangSC-Semibold, PingFang SC;
-  font-weight: 600;
-  line-height: 28px;
-  /* margin: 40px 0 0 -30px; */
-}
+  .input_line {
+    margin: 1% 4% 2% 0;
+  }
+  #claim_btn {
+    width: 70px;
+    height: 28px;
+    background: #F28552;
+    border-radius: 11px;
+    font-size: 0.6rem;
+    color: #FFFFFF;
+    border-width: 0px !important;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    line-height: 28px;
+    /* margin: 40px 0 0 -30px; */
+  }
+  #sell_record {
+    width: 90%;
+    height: 300px;
+    background: #F6F7F8;
+    border-radius: 15px;
+    border: 1px solid #E7EAEC;
+    margin: 3px 6px 0 9px;
+  }
 
 }
 
