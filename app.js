@@ -96,16 +96,6 @@ function handleTime() {
     let release_time = formatDate(rt)
     $("#stop_time").html(stop_time)
     $("#release_time").html(release_time)
-
-    // let now = (new Date()).getTime();
-    // if (now > window.app.stopTime * 1000) {
-    //     $("#exchange").attr('disabled', true)
-    //     $("#exchange").css("background", "#AAACAD")
-    // }
-    // if (now < window.app.releaseTime * 1000) {
-    //     $("#claim").attr('disabled', true)
-    //     $("#claim").css("background", "#AAACAD")
-    // }
 }
 
 function getProgress(current){
@@ -136,18 +126,23 @@ function formatDate(now) {
 
 async function syncBalance() {
     {
+        let currentTime = Math.floor(Date.now() / 1000)
         let account = window.app.current_account
         let p1 = window.app.hop.methods.balanceOf(account).call()
         let p2 = window.app.usdt.methods.balanceOf(account).call()
         let p3 = window.app.exchange.methods.balanceDetail(account).call()
-        let values = await Promise.all([p1,p2,p3])
+        let p4 = window.app.exchange.methods.accountInfo(account, currentTime).call()
+        let values = await Promise.all([p1,p2,p3, p4])
         window.app.hopBalance = values[0]
         window.app.usdtBalance = values[1]
         window.app.balanceDetail = values[2]
+        window.app.claimInfo = values[3]
 
         $("#hop_balance").html(window.app.hopBalance / 1e18 + "")
         $("#usdt_balance").html(window.app.usdtBalance / 1e6 + "")
         $("#Total_balance").html(window.app.balanceDetail.totalBalance / 1e18 + "")
+        $("#claimable").html(window.app.claimInfo[2] / 1e18 + "")
+        $("#wait_claim").html((window.app.claimInfo[0] - window.app.claimInfo[1]) / 1e18 + "")
     }
 }
 
