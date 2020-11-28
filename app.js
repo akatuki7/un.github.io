@@ -1,30 +1,11 @@
 import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_address } from "./abi_address.js"
 
-document.addEventListener('DOMContentLoaded', function () {
-    console.log('appjs DOMContentLoaded');
-});
-
-(() => {
-    console.log("() appjs");
-})();
-
-// (async ()=>{
-//     if (window.ethereum) {
-//         window.web3 = new Web3(ethereum)
-//     }
-//     $("#network").click(async () => {
-//         await start()
-//     })
-// })()
-
 window.onload = async () => {
-    console.log("window.onload");
     window.app = {};
     $("#network").click(async () => {
         await start()
     })
 }
-
 
 async function start() {
     // Modern dApp browsers...
@@ -81,6 +62,8 @@ async function start() {
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
 
+    let width = (40/90)*100+'%'
+    $("#progress").css('width', width)
 
     ethereum.on('accountsChanged', async () => {
         location.reload()
