@@ -137,13 +137,20 @@
                 <input id="b_addr" placeholder=" beneficiary address" />
                 <button id="change_address">set</button>
             </div>
-            <div>
-                <input id="append_address" placeholder="address"/>
-                <input id="append_value" type="number" placeholder="value"/> HOP
+
+            <div class="basic_title" style="margin-top: 10px;">Add Data:</div>
+            <div class="input_line">
+                <input id="append_address" placeholder=" address"/>
+                <input id="append_value" type="number" placeholder=" value(HOP)"/>
                 <button id="append">append</button><br>
-                <textarea style="width: 80%;height: 200px;" id="sell_record"></textarea><br>
+            </div>
+            <div class="input_line">
+                <textarea id="sell_record"></textarea>
+            </div>
+            <div class="input_line">
                 <button id="update">update</button>
             </div>
+            
         </div>
     </body>
 
