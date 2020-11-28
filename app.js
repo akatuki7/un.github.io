@@ -68,7 +68,7 @@ async function start() {
     //init
     await syncBalance()
     showExchangeRate()
-    await handleTime()
+    handleTime()
     attachEvents()
 }
 
@@ -84,15 +84,13 @@ async function injectContractBaseInfo(){
     window.app.fundAddress = values[1]
     window.app.owner = values[2]
     window.app.totalHop = values[3]
-    window.app.exchangeEndTime = values[4]
-    window.app.onlineTime = values[5]
+    window.app.exchangeEndTime = values[4] * 1000
+    window.app.onlineTime = values[5] * 1000
 }
 
-async function handleTime() {
-    
-    const st = new Date(window.app.exchangeEndTime * 1000)
-    const rt = new Date(window.app.onlineTime * 1000);
-
+function handleTime() {
+    const st = new Date(window.app.exchangeEndTime)
+    const rt = new Date(window.app.onlineTime);
     let stop_time = formatDate(st)
     let release_time = formatDate(rt)
     $("#stop_time").html(stop_time)
@@ -117,7 +115,7 @@ function getProgress(current){
     if (current < window.app.onlineTime){
         return 20
     }
-    let period = (current - onlineTime) / (30 * day) + 1
+    let period = (current - window.app.onlineTime) / (30 * day) + 1
     if(period >= 12) {
         return 100
     }
@@ -141,10 +139,7 @@ async function syncBalance() {
         let p1 = window.app.hop.methods.balanceOf(account).call()
         let p2 = window.app.usdt.methods.balanceOf(account).call()
         let p3 = window.app.exchange.methods.balanceDetail(account).call()
-        
         let values = await Promise.all([p1,p2,p3])
-
-        
         window.app.hopBalance = values[0]
         window.app.usdtBalance = values[1]
         window.app.balanceDetail = values[2]
@@ -191,7 +186,6 @@ function attachEvents() {
         window.app.exchange.methods.exchangeForHOP(cost).send({ from: address }).then(async () => {
             alert("exchange succeed!")
             syncBalance()
-            await showFund()
         })
     })
 
@@ -206,7 +200,6 @@ function attachEvents() {
         window.app.hop.methods.approve(exchange_address, window.app.totalHop).send({ from: window.app.fundAddress })
             .then(async () => {
                 alert("approve success!")
-                await showFund()
             })
     })
 
