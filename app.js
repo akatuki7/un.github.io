@@ -82,14 +82,14 @@ async function injectContractBaseInfo(){
     window.app.fundAddress = values[1]
     window.app.owner = values[2]
     window.app.totalHop = values[3]
-    window.app.exchangeEndTime = values[4]
-    window.app.onlineTime = values[5]
+    window.app.exchangeEndTime = values[4] * 1000
+    window.app.onlineTime = values[5] * 1000
 }
 
 async function handleTime() {
     
-    const st = new Date(window.app.exchangeEndTime * 1000)
-    const rt = new Date(window.app.onlineTime * 1000);
+    const st = new Date(window.app.exchangeEndTime)
+    const rt = new Date(window.app.onlineTime);
 
     let stop_time = formatDate(st)
     let release_time = formatDate(rt)
