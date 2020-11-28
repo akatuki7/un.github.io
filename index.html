@@ -63,7 +63,8 @@
                 </div>
             </div>
             <div id="handle_btns">
-                <button id="exchange">Exchange!<br/><span style="font-size: 12px;">Before: </span><span id="stop_time"></span></button>
+                <button id="exchange">Exchange!</button>
+                <!-- <button id="exchange">Exchange!<br/><span style="font-size: 12px;">Before: </span><span id="stop_time"></span></button> -->
                 <!-- <button id="claim">Claim!<br/><span style="font-size: 12px;">After: </span><span id="release_time"></span></button> -->
             </div>
             <!-- <div class="remaining">
@@ -73,16 +74,7 @@
 
         <div class="hop_card" id="claim_card">
             <div style="display: flex;">
-                <div style="margin-left: 2%;">
-                    <div class="claim_balance">可提现金额</div>
-                    <div class="basic_title" id="">123</div>
-                    <div class="basic_con">
-                        <div><img src="./static/HOP-logo.png" alt=""></div>
-                        <span>  HOP</span>
-                    </div>
-                </div>
-                <button id="claim_btn">Claim</button>
-                <div style="margin-left: 15%;">
+                <div>
                     <div class="claim_balance">待释放金额</div>
                     <div class="basic_title" id="">12313131232</div>
                     <div class="basic_con">
@@ -90,7 +82,19 @@
                         <span>  HOP</span>
                     </div>
                 </div>
-                
+                <div style="margin-left: 5%;">
+                    <div class="claim_balance">可提现金额</div>
+                    
+                    <div class="basic_title" id="">123</div>
+                    <div class="basic_con">
+                        <div><img src="./static/HOP-logo.png" alt=""></div>
+                        <span>  HOP</span>
+                    </div>
+                    
+                </div>
+                <div style="margin: 50px 0 0 10px;">
+                    <button id="claim_btn">Claim</button>
+                </div>  
             </div>
 
             <div class="weui-progress" style="margin-right: 5%; margin-top: 20px;">
@@ -98,9 +102,10 @@
                   <div class="weui-progress__inner-bar js_progress" id="progress" style=" background-color: #F28552"></div>
                 </div>
             </div>
-            <div style="display: flex;">
+            <div style="display: flex; justify-content: space-between; width: 90%;">
                 <div class="tips" style="width: 25%;">HOP解锁进度:</div>
-                <div class="tips" style="width: 50%; text-align: center;">0%</div>
+                <div class="tips" style="width: 20%; text-align: center;" id="progress_hop"></div>
+                <div class="tips" style="margin: 0;">下次可提现时间:2021:04:30</div>
             </div>
             
             <div class="claim_rule">

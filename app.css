@@ -219,7 +219,7 @@ body {
   font-family: PingFangSC-Semibold, PingFang SC;
   font-weight: 600;
   line-height: 32px;
-  margin: 70px 0 0 28px;
+  /* margin: 54px 0 0 -37px; */
 }
 }
 
@@ -454,7 +454,7 @@ body {
   font-family: PingFangSC-Semibold, PingFang SC;
   font-weight: 600;
   line-height: 28px;
-  margin: 67px 0 0 -10px;
+  /* margin: 40px 0 0 -30px; */
 }
 
 }
@@ -489,7 +489,7 @@ input {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #1E2024;
-  line-height: 50px;
+  /* line-height: 50px; */
 }
 
 .tips {
