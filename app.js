@@ -107,6 +107,22 @@ async function handleTime() {
     }
 }
 
+function getProgress(current){
+    let day = 24 * 60 * 60
+    if (current < window.app.exchangeEndTime + day /2){
+        return 0
+    }
+    if (current < window.app.onlineTime){
+        return 20
+    }
+    let period = (current - onlineTime) / (30 * day) + 1
+    if(period >= 12) {
+        return 100
+    }
+    let p = Math.floor(period)
+    return 20 + p * (80 / 12)
+}
+
 function formatDate(now) {
     var year = now.getFullYear();
     var month = now.getMonth() + 1;
