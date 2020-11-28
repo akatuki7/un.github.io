@@ -53,7 +53,7 @@ async function start() {
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
     
-    let now = (new Date()).getTime()/1000;
+    let now = (new Date()).getTime();
     let width = getProgress(now)+'%'
     $("#progress").css('width', width)
     $('#progress_hop').html(width)
@@ -99,7 +99,7 @@ function handleTime() {
 }
 
 function getProgress(current){
-    let day = 24 * 60 * 60
+    let day = 24 * 60 * 60 * 1000
     if (current < window.app.exchangeEndTime + day /2){
         return 0
     }
