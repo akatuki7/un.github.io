@@ -115,7 +115,7 @@ function getProgress(current){
     if (current < window.app.onlineTime){
         return 20
     }
-    let period = (current - onlineTime) / (30 * day) + 1
+    let period = (current - window.app.onlineTime) / (30 * day) + 1
     if(period >= 12) {
         return 100
     }
