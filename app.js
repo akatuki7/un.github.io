@@ -51,9 +51,11 @@ async function start() {
     }
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
-
-    let width = (40/90)*100+'%'
+    
+    let now = (new Date()).getTime()/1000;
+    let width = getProgress(now)+'%'
     $("#progress").css('width', width)
+    $('#progress_hop').html(width)
 
     ethereum.on('accountsChanged', async () => {
         location.reload()
@@ -94,15 +96,15 @@ function handleTime() {
     $("#stop_time").html(stop_time)
     $("#release_time").html(release_time)
 
-    let now = (new Date()).getTime();
-    if (now > window.app.stopTime * 1000) {
-        $("#exchange").attr('disabled', true)
-        $("#exchange").css("background", "#AAACAD")
-    }
-    if (now < window.app.releaseTime * 1000) {
-        $("#claim").attr('disabled', true)
-        $("#claim").css("background", "#AAACAD")
-    }
+    // let now = (new Date()).getTime();
+    // if (now > window.app.stopTime * 1000) {
+    //     $("#exchange").attr('disabled', true)
+    //     $("#exchange").css("background", "#AAACAD")
+    // }
+    // if (now < window.app.releaseTime * 1000) {
+    //     $("#claim").attr('disabled', true)
+    //     $("#claim").css("background", "#AAACAD")
+    // }
 }
 
 function getProgress(current){
