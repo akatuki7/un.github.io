@@ -15,7 +15,6 @@ async function start() {
         try {
             // await ethereum.enable()
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-            console.log("accounts", accounts);
         } catch (error) {
             alert(error)
         }
@@ -34,7 +33,6 @@ async function start() {
     window.BN = web3.utils.BN
     let accounts = await web3.eth.getAccounts();
     $("#user_address").html(accounts[0]);
-    // console.log(accounts);
     window.app.current_account = accounts[0];
 
     let network = await web3.eth.net.getNetworkType();
@@ -42,17 +40,9 @@ async function start() {
     window.app.hop = new web3.eth.Contract(HOP_abi, HOP_address)
     window.app.usdt = new web3.eth.Contract(USDT_abi, USDT_address)
     window.app.exchange = new web3.eth.Contract(exchange_abi, exchange_address)
-    let p1 = window.app.exchange.methods.mutiplier().call()
-    let p2 = window.app.exchange.methods.beneficiary().call()
-    let p3 = window.app.exchange.methods.fund().call()
-    let p4 = window.app.exchange.methods.owner().call()
-    let p5 = window.app.hop.methods.totalSupply().call()
-    let values = await Promise.all([p1, p2, p3, p4, p5])
-    window.app.mutipler = values[0]
-    window.app.beneficiary = values[1]
-    window.app.fundAddress = values[2]
-    window.app.owner = values[3]
-    window.app.totalHop = values[4]
+    
+    await injectContractBaseInfo()
+
     if (window.app.current_account == window.app.owner) {
         $("#contract_owner").show()
     }
@@ -74,19 +64,32 @@ async function start() {
     })
 
     //init
-    syncBalance()
+    await syncBalance()
     showExchangeRate()
     await handleTime()
     attachEvents()
-    await showFund()
-    await showHopCredit()
+}
+
+async function injectContractBaseInfo(){
+    let p1 = window.app.exchange.methods.mutiplier().call()
+    let p2 = window.app.exchange.methods.HOP_FUND().call()
+    let p3 = window.app.exchange.methods.owner().call()
+    let p4 = window.app.hop.methods.totalSupply().call()
+    let p5 = window.app.exchange.methods.EXCHANGE_END_TIME().call()
+    let p6 = window.app.exchange.methods.ONLINE_TIME().call()
+    let values = await Promise.all([p1, p2, p3, p4, p5, p6])
+    window.app.mutipler = values[0]
+    window.app.fundAddress = values[1]
+    window.app.owner = values[2]
+    window.app.totalHop = values[3]
+    window.app.exchangeEndTime = values[4]
+    window.app.onlineTime = values[5]
 }
 
 async function handleTime() {
-    window.app.stopTime = await window.app.exchange.methods.exchangeStopTime().call()
-    window.app.releaseTime = await window.app.exchange.methods.releaseHopTime().call()
-    const st = new Date(window.app.stopTime * 1000)
-    const rt = new Date(window.app.releaseTime * 1000);
+    
+    const st = new Date(window.app.exchangeEndTime * 1000)
+    const rt = new Date(window.app.onlineTime * 1000);
 
     let stop_time = formatDate(st)
     let release_time = formatDate(rt)
@@ -114,45 +117,28 @@ function formatDate(now) {
     return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
 }
 
-function syncBalance() {
+async function syncBalance() {
     {
         let account = window.app.current_account
-        window.app.hop.methods.balanceOf(account).call().then(
-            (x) => {
-                $("#hop_balance").html(x / 1e18 + "")
-            }
-        );
-        window.app.usdt.methods.balanceOf(account).call().then(
-            (x) => {
-                $("#usdt_balance").html(x / 1e6 + "")
-            }
-        );
-        window.app.exchange.methods.HOPCredit(account).call().then(
-            (x) => {
-                $("#credit_balance").html(x / 1e18 + "")
-            }
-        )
+        let p1 = window.app.hop.methods.balanceOf(account).call()
+        let p2 = window.app.usdt.methods.balanceOf(account).call()
+        let p3 = window.app.exchange.methods.balanceDetail(account).call()
+        
+        let values = await Promise.all([p1,p2,p3])
+
+        
+        window.app.hopBalance = values[0]
+        window.app.usdtBalance = values[1]
+        window.app.balanceDetail = values[2]
+
+        $("#hop_balance").html(window.app.hopBalance / 1e18 + "")
+        $("#usdt_balance").html(window.app.usdtBalance / 1e6 + "")
+        $("#Total_balance").html(window.app.balanceDetail.totalBalance / 1e18 + "")
     }
 }
 
 function showExchangeRate() {
     $("#rate").html(window.app.mutipler / 1e12)
-}
-
-async function showFund() {
-    let fundAddress = await window.app.exchange.methods.fund().call()
-    let fundBalance = await window.app.hop.methods.balanceOf(fundAddress).call()
-    let fundAllowance = await window.app.hop.methods.allowance(fundAddress, exchange_address).call()
-    let remain = (fundBalance < fundAllowance ? fundBalance : fundAllowance) / 1e18
-    $("#remain_hop").html(remain)
-    let remain_usdt = await window.app.usdt.methods.balanceOf(window.app.beneficiary).call()
-    $("#remain_usdt").html(remain_usdt / 1e6)
-    $("#allowance").html(window.app.totalHop / 1e18)
-}
-
-async function showHopCredit() {
-    let credit = await window.app.exchange.methods.HOPCredit(window.app.current_account).call()
-    console.log("credit", credit);
 }
 
 function attachEvents() {
