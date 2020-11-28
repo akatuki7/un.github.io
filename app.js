@@ -58,6 +58,19 @@ async function start() {
     $("#progress").css('width', width)
     $('#progress_hop').html(width)
 
+    //calculate new time
+    let day = 24 * 60 * 60 * 1000
+    let times = [window.app.exchangeEndTime + day /2, window.app.onlineTime]
+    for(var i = 0; i< 11; i++){
+        times.push(times[times.length-1] + 30 * day)
+    }
+    window.app.times = times
+    for(var i in times){
+        if(now < times[i])
+        $("#next_release").html("下次释放HOP时间"+ formatDate(new Date(times[i])))
+        break;
+    }
+    
     ethereum.on('accountsChanged', async () => {
         location.reload()
     })
@@ -71,6 +84,7 @@ async function start() {
     showExchangeRate()
     handleTime()
     attachEvents()
+
 }
 
 async function injectContractBaseInfo(){

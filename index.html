@@ -105,17 +105,17 @@
             <div style="display: flex; justify-content: space-between; width: 90%;">
                 <div class="tips" style="width: 25%;">HOP解锁进度:</div>
                 <div class="tips" style="width: 20%; text-align: center;" id="progress_hop"></div>
-                <div class="tips" style="margin: 0;">下次释放HOP时间:2021:04:30</div>
+                <div class="tips" style="margin: 0;" id="next_release"></div>
             </div>
             
             <div class="claim_rule">
                 <div class="tips">
-                    规则: 2020.11.10-2020.12.31之间购买的HOP，将于2021.1.1 12:00am 释放总量的20%，剩余金额将以每30天为周期分12次平均发放。
+                   (UTC时间) 2020.11.10-2020.12.31之间购买的HOP，将于2021.1.1 12:00am 释放总量的20%，剩余金额将以每30天为周期分12次平均发放。
                 </div>
             </div>
         </div>
 
-        <div class="hop_card" id="hop_woner">
+        <div class="hop_card" id="hop_woner" hidden>
             <div class="basic_title">HOP fund:</div>
             <a id="fund_addr" class="basic_con"></a>
             <div id="approve_btn">
@@ -124,7 +124,7 @@
             </div>
         </div>
 
-        <div class="hop_card" id="contract_owner" >
+        <div class="hop_card" id="contract_owner" hidden>
             <div class="basic_title">Owner:</div>
             <a id="owner_addr" class="basic_con"></a>
             <div class="input_line">
