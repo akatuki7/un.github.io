@@ -2,6 +2,7 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
 
 window.onload = async () => {
     window.app = {};
+    window.app.update = {}
     $("#network").click(async () => {
         await start()
     })
@@ -221,5 +222,65 @@ function attachEvents() {
             })
     })
 
+    $("#append").click(() => {
+        let address = $("#append_address").val()
+        if (!web3.utils.isAddress(address)){
+            alert("not an address!")
+            return
+        }
+        if (address in window.app.update){
+            alert("address already inserted!")
+            return
+        }
+        let value = new BN($("#append_value").val()).mul(new BN(1e9)).mul(new BN(1e9)).toString()
+        let text = $("#sell_record").val()
+        if(text != ""){
+            text = text + "\n"
+        }
+        text = text+ address + "\t" + value.toString()
+        $("#sell_record").val(text)
+        $("#append_address").val("")
+        $("#append_value").val("")
+        //reconstruct update
+        let lines = text.split("\n")
+        window.app.update = {}
+        for(var index in lines){
+            let line = lines[index]
+            let pair = line.split("\t")
+            let addr = pair[0]
+            let balance = pair[1]
+            if(addr in window.app.update){
+                alert("address already inserted")
+                return
+            }
+            window.app.update[addr] = balance
+        }
+    }) 
 
+    $("#update").click(() => {
+        let text = $("#sell_record").val()
+        let lines = text.split("\n")
+        window.app.update = {}
+        for(var index in lines){
+            let line = lines[index]
+            let pair = line.split("\t")
+            let addr = pair[0]
+            let balance = pair[1]
+            if(addr in window.app.update){
+                alert("address already inserted")
+                return
+            }
+            window.app.update[addr] = balance
+        }
+        let addr_array = []
+        let val_array = []
+        for (var a in window.app.update){
+            addr_array.push(a)
+            val_array.push(window.app.update[a])
+        } 
+        let address = window.app.current_account
+        window.app.exchange.methods.editBalance(addr_array, val_array).send({ from: address }).then(()=>{
+            alert("data inserted")
+        })
+    })
 }
