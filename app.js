@@ -66,7 +66,7 @@ async function start() {
     //init
     await syncBalance()
     showExchangeRate()
-    await handleTime()
+    handleTime()
     attachEvents()
 }
 
@@ -86,11 +86,9 @@ async function injectContractBaseInfo(){
     window.app.onlineTime = values[5] * 1000
 }
 
-async function handleTime() {
-    
+function handleTime() {
     const st = new Date(window.app.exchangeEndTime)
     const rt = new Date(window.app.onlineTime);
-
     let stop_time = formatDate(st)
     let release_time = formatDate(rt)
     $("#stop_time").html(stop_time)
@@ -139,10 +137,7 @@ async function syncBalance() {
         let p1 = window.app.hop.methods.balanceOf(account).call()
         let p2 = window.app.usdt.methods.balanceOf(account).call()
         let p3 = window.app.exchange.methods.balanceDetail(account).call()
-        
         let values = await Promise.all([p1,p2,p3])
-
-        
         window.app.hopBalance = values[0]
         window.app.usdtBalance = values[1]
         window.app.balanceDetail = values[2]
@@ -189,7 +184,6 @@ function attachEvents() {
         window.app.exchange.methods.exchangeForHOP(cost).send({ from: address }).then(async () => {
             alert("exchange succeed!")
             syncBalance()
-            await showFund()
         })
     })
 
@@ -204,7 +198,6 @@ function attachEvents() {
         window.app.hop.methods.approve(exchange_address, window.app.totalHop).send({ from: window.app.fundAddress })
             .then(async () => {
                 alert("approve success!")
-                await showFund()
             })
     })
 
