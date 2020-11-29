@@ -247,17 +247,18 @@ function attachEvents() {
             try {
                 await window.app.exchange.methods.exchangeForHOP(cost).send({ from: address })
             } catch (error) {
-                jumpToEtherscan(address)
+                
             }
         }
 
     })
 
     $("#claim").click(async () => {
-        window.app.exchange.methods.claimHOP(window.app.claimInfo[2]).send({ from: window.app.current_account }).then(async () => {
-            showMsg("claim succeed!")
-            syncBalance()
-        })
+        try{
+            window.app.exchange.methods.claimHOP(window.app.claimInfo[2]).send({ from: window.app.current_account })
+        }catch (error){
+            jumpToEtherscan(address)
+        }
     })
 
     $("#approve_hop").click(() => {
