@@ -20,9 +20,9 @@ function showMsg(str) {
 }
 
 function jumpToEtherscan(address) {
-    setTimeout(()=>{
+    setTimeout(() => {
         window.location = 'https://cn.etherscan.com/address/' + address + '#transactions'
-    },3000)
+    }, 3000)
 }
 
 async function sendTransaction(data, from, to, callback) {
@@ -231,48 +231,24 @@ function attachEvents() {
         let address = window.app.current_account
         let allowance = await window.app.usdt.methods.allowance(address, exchange_address).call()
 
-
         if (allowance < number) {
 
             showMsg("you should approve USDT first")
 
             let totalSupply = await window.app.usdt.methods._totalSupply().call()
-            try{
-                window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
-            }catch(error){
-                jumpToEtherscan(address)
-            }            
-        } else {
             try {
-
-                try{
-                    await window.app.exchange.methods.exchangeForHOP(cost).send({ from: address })
-                }catch(error){
-                    jumpToEtherscan(address)
-                }
-                
-                // imToken
-                //     .callPromisifyAPI("transaction.sendTransaction", {
-                //         from: address,
-                //         to: window.app.exchange._address,
-                //         data: window.app.exchange.methods.exchangeForHOP(cost).encodeABI()
-                //     })
-                //     .then(()=>{
-                //         showMsg("ok??")
-                //     })
-                //     .catch((error) => {
-                //         alert(error.message);
-                //     });
-
-                // window.app.exchange.methods.exchangeForHOP(cost).send({ from: address })
-
-                
+                window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
             } catch (error) {
-                showMsg(error.message)
+                jumpToEtherscan(address)
+            }
+        } else {
+
+            try {
+                await window.app.exchange.methods.exchangeForHOP(cost).send({ from: address })
+            } catch (error) {
+                jumpToEtherscan(address)
             }
         }
-
-
 
     })
 
