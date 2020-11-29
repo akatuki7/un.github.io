@@ -19,26 +19,32 @@ function showMsg(str) {
     }
 }
 
-function sendTransaction(data, from, to, success_msg) {
-    let params ={
+function jumpToEtherscan(address) {
+    setTimeout(()=>{
+        window.location = 'https://cn.etherscan.com/address/' + address + '#transactions'
+    },3000)
+}
+
+async function sendTransaction(data, from, to, callback) {
+    let params = {
         from: from,
         to: to,
         data: data
     }
-    if (typeof imtoken == 'undefined') {
-        web3.eth.sendTransaction(params)
-        .then(() => alert(success_msg))
-            .catch((error) => {
-                alert(error.message);
-            });
-    } else {
-        imToken
-            .callPromisifyAPI("web3.eth.sendTransaction", params)
-            .then(() => alert(success_msg))
-            .catch((error) => {
-                alert(error.message);
-            });
-    }
+    // if (typeof imtoken == 'undefined') {
+    return web3.eth.sendTransaction(params)
+    // .then(callback)
+    //     .catch((error) => {
+    //         alert(error.message);
+    //     });
+    // } else {
+    //     imToken
+    //         .callPromisifyAPI("web3.eth.sendTransaction", params)
+    //         .then(callback)
+    //         .catch((error) => {
+    //             alert(error.message);
+    //         });
+    // }
 }
 
 async function start() {
@@ -213,26 +219,61 @@ function attachEvents() {
 
     $("#exchange").click(async () => {
 
-        let number = new BN($("#input_usdt").val())
+        let number = parseInt(parseFloat($("#input_usdt").val()) * 1e6)
         let balance = window.app.usdtBalance
 
-        if (number.mul(new BN(1e6)) - balance > 0) {
-
+        if (number - balance > 0) {
+            showMsg("not enough usdt")
             return
         }
-        let cost = number.mul(new BN(1e6))
+
+        let cost = number
         let address = window.app.current_account
         let allowance = await window.app.usdt.methods.allowance(address, exchange_address).call()
-        if (allowance / 1e6 < number) {
+
+
+        if (allowance < number) {
+
+            showMsg("you should approve USDT first")
+
             let totalSupply = await window.app.usdt.methods._totalSupply().call()
-            await window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
+            try{
+                window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
+            }catch(error){
+                jumpToEtherscan(address)
+            }            
+        } else {
+            try {
+
+                try{
+                    await window.app.exchange.methods.exchangeForHOP(cost).send({ from: address })
+                }catch(error){
+                    jumpToEtherscan(address)
+                }
+                
+                // imToken
+                //     .callPromisifyAPI("transaction.sendTransaction", {
+                //         from: address,
+                //         to: window.app.exchange._address,
+                //         data: window.app.exchange.methods.exchangeForHOP(cost).encodeABI()
+                //     })
+                //     .then(()=>{
+                //         showMsg("ok??")
+                //     })
+                //     .catch((error) => {
+                //         alert(error.message);
+                //     });
+
+                // window.app.exchange.methods.exchangeForHOP(cost).send({ from: address })
+
+                
+            } catch (error) {
+                showMsg(error.message)
+            }
         }
-        sendTransaction(window.app.exchange.methods.exchangeForHOP(cost).encodeABI(),
-                 address, window.app.exchange._address, "success")
-        // window.app.exchange.methods.exchangeForHOP(cost).send({ from: address }).then(async () => {
-        //     showMsg("exchange success!")
-        //     syncBalance()
-        // })
+
+
+
     })
 
     $("#claim").click(async () => {
