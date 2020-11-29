@@ -5,9 +5,9 @@ export let exchange_abi = [{"inputs":[{"internalType":"address","name":"HOPAddr"
 //test net
 // export let HOP_address = "0x880F0A55b9A5eB22B154650997E4838AC1BF591D"
 // export let USDT_address = "0xEf48A12D6eE4D04778b914305BC630e5DEB1f7D1"
-// export let exchange_address = "0xFAc3abDb2f1d06f21b3E28A76a59BFa4370d3c1e"
+// export let exchange_address = "0x4e1854213b10b8F8d90fF2a6460b5573695c79FC"
 
 //main net
 export let HOP_address = "0x1999ac2b141E6d5c4e27579b30f842078bc620b3"
 export let USDT_address = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-export let exchange_address = "0x992d68bdB5b5180b780af402384D20E2bf9264c7"
+export let exchange_address = "0xd76e97871c04b0f481acd75c1a1525dec31eefb9"

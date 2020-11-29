@@ -3,9 +3,42 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
 window.onload = async () => {
     window.app = {};
     window.app.update = {}
-    $("#network").click(async () => {
-        await start()
-    })
+    // $("#network").click(async () => {
+    //     await start()
+    // })
+    await start()
+}
+
+
+
+function showMsg(str) {
+    if (typeof imtoken == 'undefined') {
+        alert(str)
+    } else {
+        imToken.callAPI('native.alert', str)
+    }
+}
+
+function sendTransaction(data, from, to, success_msg) {
+    let params ={
+        from: from,
+        to: to,
+        data: data
+    }
+    if (typeof imtoken == 'undefined') {
+        web3.eth.sendTransaction(params)
+        .then(() => alert(success_msg))
+            .catch((error) => {
+                alert(error.message);
+            });
+    } else {
+        imToken
+            .callPromisifyAPI("web3.eth.sendTransaction", params)
+            .then(() => alert(success_msg))
+            .catch((error) => {
+                alert(error.message);
+            });
+    }
 }
 
 async function start() {
@@ -17,7 +50,7 @@ async function start() {
             // await ethereum.enable()
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         } catch (error) {
-            alert(error)
+            showMsg(error)
         }
     }
     // Legacy dApp browsers...
@@ -28,7 +61,7 @@ async function start() {
     // Non-dApp browsers...
     else {
         $("#broswer_type").html("none")
-        window.alert("Please connect to Metamask.")
+        window.showMsg("Please connect to Metamask.")
     }
 
     window.BN = web3.utils.BN
@@ -41,7 +74,7 @@ async function start() {
     window.app.hop = new web3.eth.Contract(HOP_abi, HOP_address)
     window.app.usdt = new web3.eth.Contract(USDT_abi, USDT_address)
     window.app.exchange = new web3.eth.Contract(exchange_abi, exchange_address)
-    
+
     await injectContractBaseInfo()
 
     if (window.app.current_account == window.app.owner) {
@@ -52,25 +85,25 @@ async function start() {
     }
     $("#owner_addr").html(window.app.owner)
     $("#fund_addr").html(window.app.fundAddress)
-    
+
     let now = (new Date()).getTime();
-    let width = getProgress(now)+'%'
+    let width = getProgress(now) + '%'
     $("#progress").css('width', width)
     $('#progress_hop').html(width)
 
     //calculate new time
     let day = 24 * 60 * 60 * 1000
-    let times = [window.app.exchangeEndTime + day /2, window.app.onlineTime]
-    for(var i = 0; i< 11; i++){
-        times.push(times[times.length-1] + 30 * day)
+    let times = [window.app.exchangeEndTime + day / 2, window.app.onlineTime]
+    for (var i = 0; i < 11; i++) {
+        times.push(times[times.length - 1] + 30 * day)
     }
     window.app.times = times
-    for(var i in times){
-        if(now < times[i])
-        $("#next_release").html("下次释放HOP时间"+ formatDate(new Date(times[i])))
+    for (var i in times) {
+        if (now < times[i])
+            $("#next_release").html("下次释放HOP时间" + formatDate(new Date(times[i])))
         break;
     }
-    
+
     ethereum.on('accountsChanged', async () => {
         location.reload()
     })
@@ -87,7 +120,7 @@ async function start() {
 
 }
 
-async function injectContractBaseInfo(){
+async function injectContractBaseInfo() {
     let p1 = window.app.exchange.methods.mutiplier().call()
     let p2 = window.app.exchange.methods.HOP_FUND().call()
     let p3 = window.app.exchange.methods.owner().call()
@@ -112,16 +145,16 @@ function handleTime() {
     $("#release_time").html(release_time)
 }
 
-function getProgress(current){
+function getProgress(current) {
     let day = 24 * 60 * 60 * 1000
-    if (current < window.app.exchangeEndTime + day /2){
+    if (current < window.app.exchangeEndTime + day / 2) {
         return 0
     }
-    if (current < window.app.onlineTime){
+    if (current < window.app.onlineTime) {
         return 20
     }
     let period = (current - window.app.onlineTime) / (30 * day) + 1
-    if(period >= 12) {
+    if (period >= 12) {
         return 100
     }
     let p = Math.floor(period)
@@ -146,7 +179,7 @@ async function syncBalance() {
         let p2 = window.app.usdt.methods.balanceOf(account).call()
         let p3 = window.app.exchange.methods.balanceDetail(account).call()
         let p4 = window.app.exchange.methods.accountInfo(account, currentTime).call()
-        let values = await Promise.all([p1,p2,p3, p4])
+        let values = await Promise.all([p1, p2, p3, p4])
         window.app.hopBalance = values[0]
         window.app.usdtBalance = values[1]
         window.app.balanceDetail = values[2]
@@ -179,11 +212,12 @@ function attachEvents() {
     })
 
     $("#exchange").click(async () => {
-        let number = new BN($("#input_usdt").val())
-        let balance = new BN($("#usdt_balance").html())
 
-        if (number.gt(balance)) {
-            alert("not enough USDT!")
+        let number = new BN($("#input_usdt").val())
+        let balance = window.app.usdtBalance
+
+        if (number.mul(new BN(1e6)) - balance > 0) {
+
             return
         }
         let cost = number.mul(new BN(1e6))
@@ -193,15 +227,17 @@ function attachEvents() {
             let totalSupply = await window.app.usdt.methods._totalSupply().call()
             await window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
         }
-        window.app.exchange.methods.exchangeForHOP(cost).send({ from: address }).then(async () => {
-            alert("exchange succeed!")
-            syncBalance()
-        })
+        sendTransaction(window.app.exchange.methods.exchangeForHOP(cost).encodeABI(),
+                 address, window.app.exchange._address, "success")
+        // window.app.exchange.methods.exchangeForHOP(cost).send({ from: address }).then(async () => {
+        //     showMsg("exchange success!")
+        //     syncBalance()
+        // })
     })
 
     $("#claim").click(async () => {
-        window.app.exchange.methods.claimHOP().send({ from: window.app.current_account }).then(async () => {
-            alert("claim succeed!")
+        window.app.exchange.methods.claimHOP(window.app.claimInfo[2]).send({ from: window.app.current_account }).then(async () => {
+            showMsg("claim succeed!")
             syncBalance()
         })
     })
@@ -209,7 +245,7 @@ function attachEvents() {
     $("#approve_hop").click(() => {
         window.app.hop.methods.approve(exchange_address, window.app.totalHop).send({ from: window.app.fundAddress })
             .then(async () => {
-                alert("approve success!")
+                showMsg("approve success!")
             })
     })
 
@@ -217,7 +253,7 @@ function attachEvents() {
         let r = $("#new_rate").val()
         window.app.exchange.methods.setRate(r).send({ from: window.app.owner })
             .then(async () => {
-                alert("rate changed!")
+                showMsg("rate changed!")
                 await showExchangeRate()
             })
     })
@@ -227,69 +263,69 @@ function attachEvents() {
         let b_address = $("#b_addr").val()
         window.app.exchange.methods.changeAddress(f_address, b_address).send({ from: window.app.owner })
             .then(() => {
-                alert("address changed, please reload")
+                showMsg("address changed, please reload")
             })
     })
 
     $("#append").click(() => {
         let address = $("#append_address").val()
-        if (!web3.utils.isAddress(address)){
-            alert("not an address!")
+        if (!web3.utils.isAddress(address)) {
+            showMsg("not an address!")
             return
         }
-        if (address in window.app.update){
-            alert("address already inserted!")
+        if (address in window.app.update) {
+            showMsg("address already inserted!")
             return
         }
         let value = new BN($("#append_value").val()).mul(new BN(1e9)).mul(new BN(1e9)).toString()
         let text = $("#sell_record").val()
-        if(text != ""){
+        if (text != "") {
             text = text + "\n"
         }
-        text = text+ address + "\t" + value.toString()
+        text = text + address + "\t" + value.toString()
         $("#sell_record").val(text)
         $("#append_address").val("")
         $("#append_value").val("")
         //reconstruct update
         let lines = text.split("\n")
         window.app.update = {}
-        for(var index in lines){
+        for (var index in lines) {
             let line = lines[index]
             let pair = line.split("\t")
             let addr = pair[0]
             let balance = pair[1]
-            if(addr in window.app.update){
-                alert("address already inserted")
+            if (addr in window.app.update) {
+                showMsg("address already inserted")
                 return
             }
             window.app.update[addr] = balance
         }
-    }) 
+    })
 
     $("#update").click(() => {
         let text = $("#sell_record").val()
         let lines = text.split("\n")
         window.app.update = {}
-        for(var index in lines){
+        for (var index in lines) {
             let line = lines[index]
             let pair = line.split("\t")
             let addr = pair[0]
             let balance = pair[1]
-            if(addr in window.app.update){
-                alert("address already inserted")
+            if (addr in window.app.update) {
+                showMsg("address already inserted")
                 return
             }
             window.app.update[addr] = balance
         }
         let addr_array = []
         let val_array = []
-        for (var a in window.app.update){
+        for (var a in window.app.update) {
             addr_array.push(a)
             val_array.push(window.app.update[a])
-        } 
+        }
         let address = window.app.current_account
-        window.app.exchange.methods.editBalance(addr_array, val_array).send({ from: address }).then(()=>{
-            alert("data inserted")
+        window.app.exchange.methods.editBalance(addr_array, val_array).send({ from: address }).then(() => {
+            showMsg("data inserted")
         })
     })
 }
