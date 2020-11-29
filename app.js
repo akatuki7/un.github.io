@@ -238,7 +238,7 @@ function attachEvents() {
 
             let totalSupply = await window.app.usdt.methods._totalSupply().call()
             try {
-                window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
+                await window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
             } catch (error) {
                 jumpToEtherscan(address)
             }
