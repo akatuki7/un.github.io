@@ -20,9 +20,10 @@ function showMsg(str) {
 }
 
 function jumpToEtherscan(address) {
+    showMsg("正在前往 etherscan")
     setTimeout(() => {
         window.location = 'https://cn.etherscan.com/address/' + address + '#transactions'
-    }, 3000)
+    }, 2000)
 }
 
 async function sendTransaction(data, from, to, callback) {
@@ -223,7 +224,7 @@ function attachEvents() {
         let balance = window.app.usdtBalance
 
         if (number - balance > 0) {
-            showMsg("not enough usdt")
+            showMsg("usdt不足")
             return
         }
 
@@ -233,7 +234,7 @@ function attachEvents() {
 
         if (allowance < number) {
 
-            showMsg("you should approve USDT first")
+            showMsg("授权 USDT")
 
             let totalSupply = await window.app.usdt.methods._totalSupply().call()
             try {
