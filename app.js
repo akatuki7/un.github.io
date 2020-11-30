@@ -47,7 +47,7 @@ async function start() {
     // Non-dApp browsers...
     else {
         $("#broswer_type").html("none")
-        window.showMsg("Please connect to Metamask.")
+        showMsg("Please connect to Metamask.")
     }
 
     window.BN = web3.utils.BN
