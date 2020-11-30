@@ -3,9 +3,9 @@ import { HOP_abi, HOP_address, USDT_abi, USDT_address, exchange_abi, exchange_ad
 window.onload = async () => {
     window.app = {};
     window.app.update = {}
-    // $("#network").click(async () => {
-    //     await start()
-    // })
+    $("#network").click(async () => {
+        await start()
+    })
     await start()
 }
 
@@ -26,27 +26,6 @@ function jumpToEtherscan(address) {
     }, 2000)
 }
 
-async function sendTransaction(data, from, to, callback) {
-    let params = {
-        from: from,
-        to: to,
-        data: data
-    }
-    // if (typeof imtoken == 'undefined') {
-    return web3.eth.sendTransaction(params)
-    // .then(callback)
-    //     .catch((error) => {
-    //         alert(error.message);
-    //     });
-    // } else {
-    //     imToken
-    //         .callPromisifyAPI("web3.eth.sendTransaction", params)
-    //         .then(callback)
-    //         .catch((error) => {
-    //             alert(error.message);
-    //         });
-    // }
-}
 
 async function start() {
     // Modern dApp browsers...
@@ -239,6 +218,7 @@ function attachEvents() {
             let totalSupply = await window.app.usdt.methods._totalSupply().call()
             try {
                 await window.app.usdt.methods.approve(exchange_address, totalSupply).send({ from: address })
+                showMsg("授权成功")
             } catch (error) {
                 jumpToEtherscan(address)
             }
@@ -246,8 +226,10 @@ function attachEvents() {
 
             try {
                 await window.app.exchange.methods.exchangeForHOP(cost).send({ from: address })
+                showMsg("购买成功")
+                await syncBalance()
             } catch (error) {
-                
+                jumpToEtherscan(address)
             }
         }
 
@@ -256,6 +238,8 @@ function attachEvents() {
     $("#claim").click(async () => {
         try{
             window.app.exchange.methods.claimHOP(window.app.claimInfo[2]).send({ from: window.app.current_account })
+            showMsg("收取成功")
+            await syncBalance()
         }catch (error){
             jumpToEtherscan(address)
         }
